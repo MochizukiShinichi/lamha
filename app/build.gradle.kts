@@ -36,8 +36,16 @@ android {
     buildFeatures {
         compose = true
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        // Paparazzi runs unit-test compilation and is stricter about Kotlin/Compose compiler compatibility.
+        // Kotlin on this machine resolves to 1.9.24; use a compatible Compose compiler extension.
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -56,8 +64,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation("androidx.compose.material:material-icons-extended:1.5.0")
-    implementation("androidx.compose.material:material-icons-extended:1.5.0")
     testImplementation(libs.junit)
+
+    // ARM64-friendly JVM UI verification gate
+    testImplementation("org.robolectric:robolectric:4.12.2")
+    testImplementation("androidx.test:core:1.5.0")
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
