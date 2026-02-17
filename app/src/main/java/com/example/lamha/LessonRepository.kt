@@ -9,31 +9,90 @@ object LessonRepository {
                 street = StreetSection(
                     title = "Negotiating an Auto",
                     dialogue = listOf(
-                        DialogueLine("d1_s_1", "Passenger", "भैया, कनॉट प्लेस चलोगे?", "Brother, will you go to Connaught Place?"),
-                        DialogueLine("d1_s_2", "Auto Driver", "हाँ, बैठिये। कहाँ जाना है ठीक से बताइये।", "Yes, sit. Tell me exactly where to go."),
-                        DialogueLine("d1_s_3", "Passenger", "इनर सर्कल जाना है। मीटर से चलोगे?", "I need to go to the Inner Circle. Will you go by meter?"),
-                        DialogueLine("d1_s_4", "Auto Driver", "मीटर नहीं, साहब। २०० रुपये फिक्स।", "No meter, sir. 200 rupees fixed."),
-                        DialogueLine("d1_s_5", "Passenger", "ये तो बहुत ज़्यादा है! १५० रुपये ठीक हैं।", "That is too much! 150 rupees is fair."),
-                        DialogueLine("d1_s_6", "Auto Driver", "आगे बहुत ट्रैफ़िक है, टाइम लगेगा। १८० दे दीजिये।", "There is a lot of traffic ahead, it will take time. Give 180."),
-                        DialogueLine("d1_s_7", "Passenger", "ठीक है, चलो। लेकिन ट्रैफ़िक से मत ले जाना।", "Okay, let's go. But don't take [us] through the traffic."),
-                        DialogueLine("d1_s_8", "Auto Driver", "फ़िक्र मत कीजिये, मैं छोटे रास्ते से ले चलूँगा।", "Don't worry, I will take you via the shortcut.")
+                        DialogueLine("d1_s_1", "Passenger", "भैया, कनॉट प्लेस चलेंगे?", "Bhaiya, will you go to Connaught Place?"),
+                        DialogueLine("d1_s_2", "Auto Driver", "हाँ जी, बैठिए। कहाँ जाना है—ठीक-ठीक बता दीजिए।", "Yes—please sit. Tell me clearly where you want to go."),
+                        DialogueLine("d1_s_3", "Passenger", "इनर सर्कल जाना है। मीटर से चलेंगे?", "I need to go to the Inner Circle. Will you go by meter?"),
+                        DialogueLine("d1_s_4", "Auto Driver", "मीटर नहीं होगा, भैया। २०० रुपये फिक्स।", "No meter, bhaiya. 200 rupees fixed."),
+                        DialogueLine("d1_s_5", "Passenger", "अरे, ये तो बहुत ज़्यादा है। १५० कर लीजिए।", "That’s too much. Make it 150."),
+                        DialogueLine("d1_s_6", "Auto Driver", "आगे ट्रैफ़िक बहुत है, टाइम लगेगा। १८० दे दीजिए।", "There’s a lot of traffic ahead, it’ll take time. Please give 180."),
+                        DialogueLine("d1_s_7", "Passenger", "ठीक है, चलिए। बस ट्रैफ़िक वाली साइड से मत ले जाना।", "Okay, let’s go. Just don’t take me through the traffic side."),
+                        DialogueLine("d1_s_8", "Auto Driver", "चिंता मत कीजिए—शॉर्टकट से ले चलता हूँ।", "Don’t worry—I’ll take you via a shortcut.")
                     ),
                     vocabulary = listOf(
-                        VocabItem("d1_v_1", "चलना (chalnā)", "To move/go", "Verb (Intransitive). Context: Asking the driver to move."),
-                        VocabItem("d1_v_2", "भैया (bhaiyā)", "Brother", "Noun (M). Common, polite way to address a male stranger."),
-                        VocabItem("d1_v_3", "बैठिये (baiṭhiye)", "Please sit", "Verb (Imperative, Formal 'Aap' form)."),
-                        VocabItem("d1_v_4", "ठीक से (ṭhīk se)", "Properly/Exactly", "Adverb phrase."),
-                        VocabItem("d1_v_5", "मीटर (mīṭar)", "Meter", "Noun (M). Loan word from English."),
-                        VocabItem("d1_v_6", "ज़्यादा (zyādā)", "Too much/More", "Adjective. Originally Persian."),
-                        VocabItem("d1_v_7", "रुपये (rupaye)", "Rupees", "Noun (M, Pl). Currency."),
-                        VocabItem("d1_v_8", "आगे (āge)", "Ahead", "Adverb of place."),
-                        VocabItem("d1_v_9", "रास्ता (rāstā)", "Way/Route", "Noun (M)."),
-                        VocabItem("d1_v_10", "फ़िक्र (fikr)", "Worry/Concern", "Noun (F). Urdu origin.")
+                        VocabItem(
+                            "d1_v_1",
+                            "चलना (chalnā)",
+                            "to go / to move",
+                            "Verb. In real speech you’ll hear: ‘चलेंगे?’ (polite) / ‘चलोगे?’ (casual). Used when asking someone to go/drive somewhere."
+                        ),
+                        VocabItem(
+                            "d1_v_2",
+                            "भैया (bhaiyā)",
+                            "bhaiya / brother (polite address)",
+                            "Common North-Indian address for a male stranger (auto drivers, shopkeepers). Friendly + polite, not literal family."
+                        ),
+                        VocabItem(
+                            "d1_v_3",
+                            "बैठिए (baiṭhiye)",
+                            "please sit",
+                            "Polite imperative (Aap-form). Pattern: verb stem + -इए (जाइए, बताइए, दीजिए)."
+                        ),
+                        VocabItem(
+                            "d1_v_4",
+                            "ठीक-ठीक (ṭhīk-ṭhīk)",
+                            "clearly / exactly",
+                            "Colloquial emphasis. Similar to ‘ठीक से’, but more everyday in speech: ‘ठीक-ठीक बता दीजिए’."
+                        ),
+                        VocabItem(
+                            "d1_v_5",
+                            "मीटर (mīṭar)",
+                            "meter",
+                            "Loanword. In auto/taxi talk: ‘मीटर से चलेंगे?’ = will you go by meter (not fixed price)."
+                        ),
+                        VocabItem(
+                            "d1_v_6",
+                            "ज़्यादा (zyādā)",
+                            "too much / more",
+                            "Very common everyday adjective (Urdu/Persian origin). In bargaining: ‘बहुत ज़्यादा है’."
+                        ),
+                        VocabItem(
+                            "d1_v_7",
+                            "फिक्स (fixed)",
+                            "fixed (price)",
+                            "Hinglish. ‘२०० फिक्स’ means the price is non-meter, set in advance."
+                        ),
+                        VocabItem(
+                            "d1_v_8",
+                            "ट्रैफ़िक (traffic)",
+                            "traffic",
+                            "Everyday Hinglish. Often paired with ‘टाइम लगेगा’ (it will take time)."
+                        ),
+                        VocabItem(
+                            "d1_v_9",
+                            "शॉर्टकट (shortcut)",
+                            "shortcut",
+                            "Common spoken word for a faster route. You’ll also hear ‘छोटा रास्ता’."
+                        ),
+                        VocabItem(
+                            "d1_v_10",
+                            "चिंता (chintā)",
+                            "worry / concern",
+                            "‘चिंता मत कीजिए’ is a very standard polite reassurance (aap-form)."
+                        )
                     ),
                     grammarGuides = listOf(
-                        GrammarPoint("Future Tense: -oge vs -enge", "In Hindi, future tense suffixes depend on the subject's respect level. 'Chaloge' (चलोगे) ends in '-oge' because the passenger uses 'Tum' (informal you) for the driver. If speaking formally, it would be 'Chalenge' (चलेंगे) for 'Aap'.\nFormula: Tum + stem + oge | Aap + stem + enge"),
-                        GrammarPoint("Imperatives & Respect", "Commands reflect social hierarchy. The driver uses 'Baithiye' (Sit, formal) with the suffix '-iye' for the customer (Aap). The customer implies 'Tum' by asking 'Chaloge?'."),
-                        GrammarPoint("Postposition 'Se'", "'Se' (से) is a versatile marker.\n1. Instrumental: 'Meter se' = By means of the meter.\n2. Path/Via: 'Raaste se' = Via the route.\nIt connects the noun to the action.")
+                        GrammarPoint(
+                            "Politeness & Register (Aap vs Tum)",
+                            "Hindi has different levels of ‘you’. In daily city speech, you’ll often keep things polite with **Aap + जी** with strangers (coworker-level politeness).\n\nExamples from this lesson:\n- **चलेंगे? / दीजिए / बैठिए** → Aap-form (polite)\n- **चलोगे? / दे दो / बैठो** → Tum-form (more casual)\n\nRule of thumb (beginner-friendly): start with **Aap** in real life; you can switch to Tum only when the vibe is clearly informal."
+                        ),
+                        GrammarPoint(
+                            "Useful polite patterns for bargaining",
+                            "These patterns sound natural without being slangy:\n\n1) **X कर लीजिए** = ‘Please make it X’ (soft negotiation)\n- ‘१५० कर लीजिए।’\n\n2) **X दे दीजिए** = ‘Please give X’ (polite request)\n- ‘१८० दे दीजिए।’\n\n3) **मत + (verb)** = ‘Don’t…’ (polite/casual depends on ending)\n- ‘मत ले जाना’ (request not to take a route)\n- more polite: ‘मत ले जाइए’"
+                        ),
+                        GrammarPoint(
+                            "Postposition ‘से’ (se) in travel talk",
+                            "‘से’ marks **means / route / instrument**:\n- **मीटर से** = by meter (using the meter as the pricing method)\n- **शॉर्टकट से** = via a shortcut (using a shortcut route)\n\nIt links the noun to the action: ‘मीटर से चलेंगे?’ (Will you go by meter?)"
+                        )
                     )
                 ),
                 court = CourtSection(
