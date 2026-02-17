@@ -261,6 +261,12 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
+                // Readability scrim
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.35f))
+                )
             } else {
                 // Gali (Street) - Sandstone Light
                 Image(
@@ -272,91 +278,70 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
             }
 
             // 3. Content Scaffold
-            Scaffold(
-                containerColor = Color.Transparent, 
+            com.example.lamha.ui.components.LamhaScaffold(
                 topBar = {
-                    if (selectedTab == 1) {
-                        // Leela Header (Transparent)
-                        CenterAlignedTopAppBar(
-                            title = { 
-                                Text("लम्हा", fontWeight = FontWeight.Bold, fontSize = 32.sp, fontFamily = EczarFont, color = Color(0xFFFFECB3))
-                            },
-                            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
-                            navigationIcon = {
-                                IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Color(0xFFFFECB3)) }
-                            }
-                        )
-                    } else {
-                        // Gali Header (Solid Beige + Divider)
-                        Column {
-                            CenterAlignedTopAppBar(
-                                title = { 
-                                    Text("GALI", fontWeight = FontWeight.SemiBold, fontSize = 18.sp, letterSpacing = 2.sp, color = GaliTitleColor)
-                                },
-                                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = GaliHeaderBg),
-                                navigationIcon = {
-                                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = GaliTitleColor) }
-                                }
+                    com.example.lamha.ui.components.LamhaTopBar(
+                        title = {
+                            val titleText = if (selectedTab == 1) "Leela" else "Gali"
+                            Text(
+                                text = titleText,
+                                style = if (selectedTab == 1) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontFamily = if (selectedTab == 1) EczarFont else LatoFont,
+                                letterSpacing = if (selectedTab == 0) 1.5.sp else 0.sp,
                             )
-                            Divider(color = GaliHeaderDivider, thickness = 1.dp)
-                        }
-                    }
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back") }
+                        },
+                        containerColor = if (selectedTab == 1) Color.Transparent else MaterialTheme.colorScheme.surface,
+                    )
                 },
-            bottomBar = {
-                // Floating Tab Switcher (Custom) - Lowered position
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    ClayCard(
-                        shape = RoundedCornerShape(50),
-                        backgroundColor = Color.Transparent,
-                        elevation = 8.dp,
-                        modifier = Modifier.height(56.dp),
-                        contentPadding = PaddingValues(0.dp)
+                bottomBar = {
+                    // Material-styled tab switcher
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Image(
-                                painter = androidx.compose.ui.res.painterResource(R.drawable.terracotta_texture),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.matchParentSize().alpha(0.95f),
-                                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(Color.Black.copy(alpha=0.1f), blendMode = BlendMode.Darken) // Darken by 10%
-                            )
-                            // Top border
-                            Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(Color(0xFF4A2B1E).copy(alpha=0.5f)).align(Alignment.TopCenter))
-                            
+                        com.example.lamha.ui.components.LamhaCard(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            elevation = 4.dp,
+                            modifier = Modifier
+                                .height(52.dp)
+                                .clip(RoundedCornerShape(50)),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
                             Row(
-                                verticalAlignment = Alignment.CenterVertically, 
-                                modifier = Modifier.padding(horizontal = 8.dp).align(Alignment.Center)
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(horizontal = 8.dp)
                             ) {
                                 TabButton(
                                     text = "Gali",
                                     subText = "गली",
-                                    icon = Icons.Default.DirectionsCar, 
+                                    icon = Icons.Default.DirectionsCar,
                                     isSelected = selectedTab == 0,
-                                    selectedColor = Color.White,
-                                    unselectedColor = Color(0xFF4A2B1E)
+                                    selectedColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 ) { selectedTab = 0 }
-                                
+
                                 Spacer(modifier = Modifier.width(8.dp))
-                                
+
                                 TabButton(
                                     text = "Leela",
                                     subText = "लीला",
-                                    icon = Icons.Default.TempleHindu, 
+                                    icon = Icons.Default.TempleHindu,
                                     isSelected = selectedTab == 1,
-                                    selectedColor = Color.White,
-                                    unselectedColor = Color(0xFF4A2B1E)
+                                    selectedColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 ) { selectedTab = 1 }
                             }
                         }
                     }
                 }
-            }
-        ) { padding ->
+            ) { padding ->
             // Smooth content switch (stable API)
             val leelaBg = remember {
                 Brush.verticalGradient(
