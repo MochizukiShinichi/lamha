@@ -284,6 +284,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
 
             // Content Scaffold
             com.example.lamha.ui.components.LamhaScaffold(
+                containerColor = if (selectedTab == 1) Color.Transparent else MaterialTheme.colorScheme.background,
                 topBar = {
                     com.example.lamha.ui.components.LamhaTopBar(
                         title = {

@@ -14,21 +14,21 @@ import androidx.compose.ui.Modifier
 fun LamhaScaffold(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
+    containerColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.background,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val insets = WindowInsets.safeDrawing
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background,
+        color = containerColor,
     ) {
         Scaffold(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = containerColor,
             contentWindowInsets = insets,
             topBar = topBar,
             bottomBar = bottomBar,
         ) { inner ->
-            // Screens can add app spacing on top of the scaffold insets.
             content(inner)
         }
     }
