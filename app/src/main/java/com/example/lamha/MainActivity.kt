@@ -86,13 +86,15 @@ val StreetPalette = lightColorScheme(
     outlineVariant = Color(0xFFE0D6C6)
 )
 
-val CourtPalette = darkColorScheme( // Revert to Dark Scheme for the Dark Background
+val CourtPalette = darkColorScheme(
     primary = Color(0xFFFFD700),    // Gold
     secondary = Color(0xFFD4AF37),  // Metallic Gold
     tertiary = Color(0xFF8D6E63),   // Bronze
     background = Color.Transparent, // Let the image show
-    surface = Color(0x1AFFFFFF),    // Glassy White (10%)
-    onSurface = Color(0xFFFFECB3),  // Pale Gold Text
+    surface = Color(0xFFFFFFFF),    // Solid card base
+    surfaceVariant = Color(0xFFF3E6C7),
+    onSurface = Color(0xFF2E2016),  // Deep brown for readability
+    onSurfaceVariant = Color(0xFF4A3A2A),
     onPrimary = Color.Black
 )
 
@@ -211,11 +213,8 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Spacer(modifier = Modifier.height(s.xs))
-                            Text(
-                                text = "Gali · गली  |  Leela · लीला",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
+                            // Removed redundant Gali/Leela label for cleaner cards
+
                         }
                     }
                 }
@@ -284,7 +283,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.45f))
+                        .background(Color.Black.copy(alpha = 0.55f))
                 )
             } else {
                 // Gali (Street) - Sandstone Light
@@ -310,7 +309,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                             val titleText = if (selectedTab == 1) "Leela · लीला" else "Gali · गली"
                             Text(
                                 text = titleText,
-                                style = if (selectedTab == 1) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleMedium,
+                                style = MaterialTheme.typography.titleLarge,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontFamily = if (selectedTab == 1) EczarFont else LatoFont,
                                 letterSpacing = if (selectedTab == 0) 1.0.sp else 0.sp,
@@ -437,11 +436,12 @@ fun StreetView(section: StreetSection, activeId: String?, onPlay: (String) -> Un
         verticalArrangement = Arrangement.spacedBy(s.md)
     ) {
         item {
+            com.example.lamha.ui.components.LamhaSectionTitle("Gali · गली")
             Text(
                 text = section.title,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(bottom = s.md)
+                modifier = Modifier.padding(top = s.xs, bottom = s.md)
             )
         }
 
@@ -555,9 +555,9 @@ fun CourtView(section: CourtSection, activeId: String?, onPlay: (String) -> Unit
 
         item {
             com.example.lamha.ui.components.LamhaCard(
-                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.96f),
-                elevation = 8.dp,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.75f))
+                containerColor = MaterialTheme.colorScheme.surface,
+                elevation = 10.dp,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.85f))
             ) {
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     section.poemLines.forEach { line ->
@@ -608,8 +608,8 @@ fun CourtLexiconItem(word: WordAnalysis, isPlaying: Boolean, onPlay: () -> Unit)
 
     com.example.lamha.ui.components.LamhaCard(
         modifier = Modifier.fillMaxWidth().clickable { onPlay() },
-        elevation = if (isPlaying) 6.dp else 1.dp,
-        containerColor = if (isPlaying) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+        elevation = if (isPlaying) 8.dp else 3.dp,
+        containerColor = if (isPlaying) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
         contentColor = if (isPlaying) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
     ) {
         Column {
