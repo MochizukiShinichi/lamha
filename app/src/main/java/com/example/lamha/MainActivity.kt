@@ -80,12 +80,14 @@ val CourtPalette = darkColorScheme(
     secondary = Color(0xFFD4AF37),  // Metallic Gold
     tertiary = Color(0xFF8D6E63),   // Bronze
     background = Color.Transparent, // Let the image show
-    surface = Color(0x52FFFFFF),    // Frosted glass (stronger)
-    surfaceVariant = Color(0x3AFFFFFF),
-    onSurface = Color(0xFFFFECB3),  // Pale Gold Text
-    onSurfaceVariant = Color(0xFFE6D7B8),
+    surface = Color(0xCC000000),    // Black frosted glass
+    surfaceVariant = Color(0xB3000000),
+    onSurface = Color(0xFFFFFFFF),  // White text
+    onSurfaceVariant = Color(0xFFEDEDED),
     onPrimary = Color.Black
 )
+
+private val Terracotta = Color(0xFFC65A3D)
 
 @Composable
 fun LamhaApp() {
@@ -145,13 +147,16 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
             modifier = Modifier.padding(padding)
         ) {
             item {
-                Text(
-                    text = "The Palace of Life",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = "The Palace of Life",
+                        style = MaterialTheme.typography.labelMedium,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(s.xs))
+                    Divider(color = Terracotta.copy(alpha = 0.6f), thickness = 1.dp, modifier = Modifier.width(120.dp))
+                }
             }
 
             items(lessons) { lesson ->
@@ -176,7 +181,7 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
                                     text = lesson.dayTitle.takeLast(1),
                                     style = MaterialTheme.typography.titleLarge,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = Terracotta
                                 )
                             }
                             Spacer(modifier = Modifier.width(s.lg))
@@ -184,6 +189,7 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
                                 Text(
                                     text = lesson.dayTitle,
                                     style = MaterialTheme.typography.headlineSmall,
+                                    color = Terracotta
                                 )
                                 Text(
                                     text = lesson.street.title,
