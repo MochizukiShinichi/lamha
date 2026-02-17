@@ -78,9 +78,12 @@ val GaliPlayBtnBg = Color(0xFFEFEAE0)
 val StreetPalette = lightColorScheme(
     primary = Color(0xFF2E7D32),
     secondary = Color(0xFFE0F2E9),
-    background = Color(0xFFFDFCF0),
-    surface = Color.White,
-    onSurface = Color(0xFF1B1B1B)
+    background = Color(0xFFF8F4EC),
+    surface = Color(0xFFFFFFFF),
+    surfaceVariant = Color(0xFFF1E9DB),
+    onSurface = Color(0xFF1B1B1B),
+    onSurfaceVariant = Color(0xFF4A4A4A),
+    outlineVariant = Color(0xFFE0D6C6)
 )
 
 val CourtPalette = darkColorScheme( // Revert to Dark Scheme for the Dark Background
@@ -167,34 +170,50 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
                         .clickable { onLessonClick(lesson) },
                     containerColor = MaterialTheme.colorScheme.surface,
                     contentColor = MaterialTheme.colorScheme.onSurface,
-                    elevation = 2.dp,
+                    elevation = 3.dp,
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.surfaceVariant),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = lesson.dayTitle.takeLast(1),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                    Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(52.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = lesson.dayTitle.takeLast(1),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(s.lg))
+                            Column {
+                                Text(
+                                    text = lesson.dayTitle,
+                                    style = MaterialTheme.typography.headlineSmall,
+                                )
+                                Text(
+                                    text = lesson.street.title,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                            }
                         }
-                        Spacer(modifier = Modifier.width(s.lg))
+                        Spacer(modifier = Modifier.height(s.sm))
+                        com.example.lamha.ui.components.LamhaDivider()
+                        Spacer(modifier = Modifier.height(s.sm))
                         Column {
                             Text(
-                                text = lesson.dayTitle,
-                                style = MaterialTheme.typography.titleLarge,
+                                text = lesson.court.title,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
+                            Spacer(modifier = Modifier.height(s.xs))
                             Text(
-                                text = "${lesson.street.title} • ${lesson.court.title}",
-                                style = MaterialTheme.typography.bodyMedium,
+                                text = "Gali · गली  |  Leela · लीला",
+                                style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -265,7 +284,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.35f))
+                        .background(Color.Black.copy(alpha = 0.45f))
                 )
             } else {
                 // Gali (Street) - Sandstone Light
@@ -275,6 +294,12 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
+                // Subtle scrim for readability
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background.copy(alpha = 0.65f))
+                )
             }
 
             // 3. Content Scaffold
@@ -282,13 +307,13 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                 topBar = {
                     com.example.lamha.ui.components.LamhaTopBar(
                         title = {
-                            val titleText = if (selectedTab == 1) "Leela" else "Gali"
+                            val titleText = if (selectedTab == 1) "Leela · लीला" else "Gali · गली"
                             Text(
                                 text = titleText,
                                 style = if (selectedTab == 1) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontFamily = if (selectedTab == 1) EczarFont else LatoFont,
-                                letterSpacing = if (selectedTab == 0) 1.5.sp else 0.sp,
+                                letterSpacing = if (selectedTab == 0) 1.0.sp else 0.sp,
                             )
                         },
                         navigationIcon = {
@@ -452,18 +477,19 @@ fun StreetBubble(line: DialogueLine, isPlaying: Boolean, onPlay: () -> Unit) {
     val containerColor = if (isLeft) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.primaryContainer
     val contentColor = if (isLeft) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onPrimaryContainer
     // Highlight playing state with a border or subtle elevation change
-    val border = if (isPlaying) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
-    val elevation = if (isPlaying) 6.dp else 1.dp
+    val baseBorder = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f))
+    val border = if (isPlaying) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else baseBorder
+    val elevation = if (isPlaying) 6.dp else 3.dp
 
     Column(modifier = Modifier.fillMaxWidth().padding(vertical = s.xs), horizontalAlignment = align) {
         Text(
             text = line.speaker,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f),
             modifier = Modifier.padding(horizontal = s.sm, vertical = s.xs)
         )
         Surface(
-            modifier = Modifier.widthIn(max = 300.dp).clickable { onPlay() },
+            modifier = Modifier.widthIn(max = 340.dp).clickable { onPlay() },
             color = containerColor,
             contentColor = contentColor,
             shadowElevation = elevation,
@@ -475,7 +501,7 @@ fun StreetBubble(line: DialogueLine, isPlaying: Boolean, onPlay: () -> Unit) {
                 Text(
                     line.english,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = contentColor.copy(alpha = 0.8f)
+                    color = contentColor.copy(alpha = 0.72f)
                 )
             }
         }
@@ -529,9 +555,9 @@ fun CourtView(section: CourtSection, activeId: String?, onPlay: (String) -> Unit
 
         item {
             com.example.lamha.ui.components.LamhaCard(
-                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
-                elevation = 6.dp,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.6f))
+                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.96f),
+                elevation = 8.dp,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.75f))
             ) {
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     section.poemLines.forEach { line ->
@@ -552,9 +578,9 @@ fun CourtView(section: CourtSection, activeId: String?, onPlay: (String) -> Unit
 
         item {
             com.example.lamha.ui.components.LamhaCard(
-                elevation = 2.dp,
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
+                elevation = 4.dp,
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
             ) {
                 Text(
                     section.analysis,

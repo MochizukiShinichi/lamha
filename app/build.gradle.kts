@@ -69,6 +69,8 @@ dependencies {
     // ARM64-friendly JVM UI verification gate
     testImplementation("org.robolectric:robolectric:4.12.2")
     testImplementation("androidx.test:core:1.5.0")
+    testImplementation("androidx.test.ext:junit-ktx:1.1.5")
+    testImplementation("androidx.compose.ui:ui-test-junit4-android:1.5.0")
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
