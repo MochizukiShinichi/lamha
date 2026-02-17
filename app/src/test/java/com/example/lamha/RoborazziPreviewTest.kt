@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import com.example.lamha.ui.theme.LamhaTheme
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -59,10 +60,10 @@ class RoborazziPreviewTest {
         val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
         val lesson = LessonRepository.getLessons().first()
         renderToPng(activity, "leela.png") {
-            MaterialTheme(colorScheme = CourtPalette) {
+            LamhaTheme {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        CourtView(lesson.court, activeId = null, onPlay = {}, isDark = true)
+                        CourtView(lesson.court, activeId = null, onPlay = {})
                     }
                 }
             }
@@ -74,7 +75,7 @@ class RoborazziPreviewTest {
         val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
         val lesson = LessonRepository.getLessons().first()
         renderToPng(activity, "gali.png") {
-            MaterialTheme(colorScheme = StreetPalette) {
+            LamhaTheme {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize()) {
                         StreetView(lesson.street, activeId = null, onPlay = {})

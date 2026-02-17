@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
+import com.example.lamha.ui.theme.LamhaTheme
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -40,10 +41,10 @@ class ComposeScreenshotTest {
         
         val lesson = LessonRepository.getLessons().first()
         composeRule.setContent {
-            MaterialTheme(colorScheme = CourtPalette) {
+            LamhaTheme {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize().testTag("root")) {
-                        CourtView(lesson.court, activeId = null, onPlay = {}, isDark = true)
+                        CourtView(lesson.court, activeId = null, onPlay = {})
                     }
                 }
             }
@@ -68,7 +69,7 @@ class ComposeScreenshotTest {
         
         val lesson = LessonRepository.getLessons().first()
         composeRule.setContent {
-            MaterialTheme(colorScheme = StreetPalette) {
+            LamhaTheme {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize().testTag("root")) {
                         StreetView(lesson.street, activeId = null, onPlay = {})
