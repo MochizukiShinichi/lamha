@@ -75,8 +75,17 @@ val GaliSectionHeaderColor = Color(0xFF6F6A60)
 val GaliPlayBtnBg = Color(0xFFEFEAE0)
 
 // Theme Palette Definitions
-// NOTE: For Gali/Leela we now strictly use the Material Theme Builder colors
-// from LamhaTheme (Color.kt/Theme.kt). These custom palettes are removed.
+val CourtPalette = darkColorScheme(
+    primary = Color(0xFFFFD700),    // Gold
+    secondary = Color(0xFFD4AF37),  // Metallic Gold
+    tertiary = Color(0xFF8D6E63),   // Bronze
+    background = Color.Transparent, // Let the image show
+    surface = Color(0x24FFFFFF),    // Frosted glass
+    surfaceVariant = Color(0x1AFFFFFF),
+    onSurface = Color(0xFFFFECB3),  // Pale Gold Text
+    onSurfaceVariant = Color(0xFFE6D7B8),
+    onPrimary = Color.Black
+)
 
 @Composable
 fun LamhaApp() {
@@ -241,8 +250,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
         }
     }
 
-    // Use Theme Builder colors; switch light/dark by tab
-    LamhaTheme(darkTheme = selectedTab == 1) {
+    LamhaTheme(darkTheme = false) {
         Box(modifier = Modifier.fillMaxSize()) {
             if (selectedTab == 1) {
                 // Leela (Court) - Dark parchment + mandala
@@ -256,7 +264,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.4f))
+                        .background(Color.Black.copy(alpha = 0.35f))
                 )
             } else {
                 // Gali (Street) - Light parchment
@@ -283,7 +291,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                             Text(
                                 text = titleText,
                                 style = MaterialTheme.typography.titleLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = if (selectedTab == 1) CourtPalette.onSurface else MaterialTheme.colorScheme.onSurface,
                                 fontFamily = if (selectedTab == 1) EczarFont else LatoFont,
                                 letterSpacing = if (selectedTab == 0) 1.0.sp else 0.sp,
                             )
@@ -348,7 +356,9 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                     if (tab == 0) {
                         StreetView(lesson.street, activeAudioId, ::playAudio)
                     } else {
-                        CourtView(lesson.court, activeAudioId, ::playAudio)
+                        MaterialTheme(colorScheme = CourtPalette) {
+                            CourtView(lesson.court, activeAudioId, ::playAudio)
+                        }
                     }
                 }
             }
@@ -518,9 +528,9 @@ fun CourtView(section: CourtSection, activeId: String?, onPlay: (String) -> Unit
 
         item {
             com.example.lamha.ui.components.LamhaCard(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                elevation = 8.dp,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.7f))
+                containerColor = MaterialTheme.colorScheme.surface,
+                elevation = 6.dp,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.6f))
             ) {
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     section.poemLines.forEach { line ->
@@ -541,9 +551,9 @@ fun CourtView(section: CourtSection, activeId: String?, onPlay: (String) -> Unit
 
         item {
             com.example.lamha.ui.components.LamhaCard(
-                elevation = 5.dp,
-                containerColor = MaterialTheme.colorScheme.surface,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
+                elevation = 4.dp,
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
             ) {
                 Text(
                     section.analysis,
