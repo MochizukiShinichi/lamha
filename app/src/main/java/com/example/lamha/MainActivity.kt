@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import com.example.lamha.ui.theme.LamhaTheme
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -96,17 +97,7 @@ val CourtPalette = darkColorScheme( // Revert to Dark Scheme for the Dark Backgr
 fun LamhaApp() {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
 
-    MaterialTheme(
-        typography = Typography(
-            headlineMedium = androidx.compose.material3.Typography().headlineMedium.copy(fontFamily = EczarFont),
-            headlineLarge = androidx.compose.material3.Typography().headlineLarge.copy(fontFamily = EczarFont),
-            titleLarge = androidx.compose.material3.Typography().titleLarge.copy(fontFamily = EczarFont),
-            titleMedium = androidx.compose.material3.Typography().titleMedium.copy(fontFamily = LatoFont),
-            bodyLarge = androidx.compose.material3.Typography().bodyLarge.copy(fontFamily = LatoFont),
-            bodyMedium = androidx.compose.material3.Typography().bodyMedium.copy(fontFamily = LatoFont),
-            labelMedium = androidx.compose.material3.Typography().labelMedium.copy(fontFamily = LatoFont)
-        )
-    ) {
+    LamhaTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             Crossfade(targetState = currentScreen, animationSpec = tween(500)) { screen ->
                 when (screen) {
