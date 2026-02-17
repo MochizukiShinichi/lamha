@@ -123,71 +123,79 @@ sealed class Screen {
 @Composable
 fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
     val lessons = remember { LessonRepository.getLessons() }
+    val s = com.example.lamha.ui.designsystem.LocalSpacing.current
 
-    Scaffold(
+    com.example.lamha.ui.components.LamhaScaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { 
+            com.example.lamha.ui.components.LamhaTopBar(
+                title = {
                     Text(
-                        "लम्हा", // Hindi for Lamha
-                        fontWeight = FontWeight.Bold, 
-                        fontSize = 32.sp,
-                        fontFamily = EczarFont,
-                        color = Color(0xFF3E2723) // Dark Brown stone color
+                        text = "लम्हा",
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontWeight = FontWeight.Bold,
                     )
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.Transparent
-                )
+                containerColor = Color.Transparent,
             )
-        },
-        containerColor = Color.Transparent
+        }
     ) { padding ->
         LazyColumn(
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(
+                start = s.lg,
+                end = s.lg,
+                top = s.sm,
+                bottom = s.xxl,
+            ),
+            verticalArrangement = Arrangement.spacedBy(s.lg),
             modifier = Modifier.padding(padding)
         ) {
             item {
                 Text(
-                    "The Palace of Life",
+                    text = "The Palace of Life",
                     style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+
             items(lessons) { lesson ->
-                ClayCard(
-                    modifier = Modifier.fillMaxWidth().clickable { onLessonClick(lesson) },
+                com.example.lamha.ui.components.LamhaCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onLessonClick(lesson) },
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
                     elevation = 2.dp,
-                    shape = GaliShape, // Updated to GaliShape
-                    backgroundColor = Color.White // Neutral card
                 ) {
                     Row(
-                        modifier = Modifier.padding(20.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(50.dp)
+                                .size(48.dp)
                                 .clip(CircleShape)
-                                .background(Color(0xFFE0E0E0)),
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = lesson.dayTitle.takeLast(1),
+                                style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.Gray
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(s.lg))
                         Column {
-                            Text(lesson.dayTitle, style = MaterialTheme.typography.titleLarge)
                             Text(
-                                "${lesson.street.title} • ${lesson.court.title}", 
-                                style = MaterialTheme.typography.bodySmall, 
-                                color = Color.Gray
+                                text = lesson.dayTitle,
+                                style = MaterialTheme.typography.titleLarge,
+                            )
+                            Text(
+                                text = "${lesson.street.title} • ${lesson.court.title}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
