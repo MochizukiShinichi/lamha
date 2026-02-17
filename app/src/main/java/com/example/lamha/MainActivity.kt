@@ -421,25 +421,32 @@ fun TabButton(text: String, subText: String, icon: androidx.compose.ui.graphics.
 
 @Composable
 fun StreetView(section: StreetSection, activeId: String?, onPlay: (String) -> Unit) {
-    LazyColumn(contentPadding = PaddingValues(bottom = 100.dp, top = 16.dp, start = 16.dp, end = 16.dp)) {
+    val s = com.example.lamha.ui.designsystem.LocalSpacing.current
+    LazyColumn(
+        contentPadding = PaddingValues(bottom = 100.dp, top = s.lg, start = s.lg, end = s.lg),
+        verticalArrangement = Arrangement.spacedBy(s.md)
+    ) {
         item {
-            Text(section.title, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.padding(bottom = 16.dp))
+            Text(
+                text = section.title,
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(bottom = s.md)
+            )
         }
-        
+
         items(section.dialogue) { line ->
             StreetBubble(line, activeId == line.id) { onPlay(line.id) }
         }
 
-        item { SectionDivider() }
-        item { SectionTitle("Vocabulary") }
-        
+        item { com.example.lamha.ui.components.LamhaSectionTitle("Vocabulary") }
+
         items(section.vocabulary) { vocab ->
             VocabItemRow(vocab, activeId == vocab.id) { onPlay(vocab.id) }
         }
 
-        item { SectionDivider() }
-        item { SectionTitle("Grammar Notes") }
-        
+        item { com.example.lamha.ui.components.LamhaSectionTitle("Grammar Notes") }
+
         items(section.grammarGuides) { grammar ->
             GrammarCard(grammar)
         }
@@ -448,25 +455,43 @@ fun StreetView(section: StreetSection, activeId: String?, onPlay: (String) -> Un
 
 @Composable
 fun StreetBubble(line: DialogueLine, isPlaying: Boolean, onPlay: () -> Unit) {
+    val s = com.example.lamha.ui.designsystem.LocalSpacing.current
+    val r = com.example.lamha.ui.designsystem.LocalRadius.current
+
     // Left side = service/local speaker; Right side = learner
     val leftSpeakers = setOf("Auto Driver", "Local", "Server", "Shopkeeper", "Host", "Chemist", "Official")
     val isLeft = line.speaker in leftSpeakers
     val align = if (isLeft) Alignment.Start else Alignment.End
-    // Shared DNA: Same typography scale, just different color/shape nuances
-    val containerColor = if (isLeft) Color.White else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
-    val borderColor = if (isPlaying) MaterialTheme.colorScheme.primary else Color.Transparent
-    
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp), horizontalAlignment = align) {
-        Text(line.speaker, style = MaterialTheme.typography.labelSmall, color = Color.Gray, modifier = Modifier.padding(horizontal = 8.dp))
-        ClayCard(
+
+    // Style C: use surfaceVariant for incoming, primaryContainer for outgoing
+    val containerColor = if (isLeft) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.primaryContainer
+    val contentColor = if (isLeft) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onPrimaryContainer
+    // Highlight playing state with a border or subtle elevation change
+    val border = if (isPlaying) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
+    val elevation = if (isPlaying) 6.dp else 1.dp
+
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = s.xs), horizontalAlignment = align) {
+        Text(
+            text = line.speaker,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = s.sm, vertical = s.xs)
+        )
+        Surface(
             modifier = Modifier.widthIn(max = 300.dp).clickable { onPlay() },
-            backgroundColor = containerColor,
-            elevation = if (isPlaying) 8.dp else 2.dp,
-            shape = if (isLeft) RoundedCornerShape(4.dp, 16.dp, 16.dp, 16.dp) else RoundedCornerShape(16.dp, 4.dp, 16.dp, 16.dp)
+            color = containerColor,
+            contentColor = contentColor,
+            shadowElevation = elevation,
+            shape = if (isLeft) RoundedCornerShape(r.xs, r.lg, r.lg, r.lg) else RoundedCornerShape(r.lg, r.xs, r.lg, r.lg),
+            border = border
         ) {
-            Column {
-                Text(line.hindi, style = MaterialTheme.typography.bodyLarge, color = Color.Black)
-                Text(line.english, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+            Column(modifier = Modifier.padding(s.md)) {
+                Text(line.hindi, style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    line.english,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = contentColor.copy(alpha = 0.8f)
+                )
             }
         }
     }
@@ -474,26 +499,28 @@ fun StreetBubble(line: DialogueLine, isPlaying: Boolean, onPlay: () -> Unit) {
 
 @Composable
 fun VocabItemRow(vocab: VocabItem, isPlaying: Boolean, onPlay: () -> Unit) {
-    ClayCard(
+    val activeColor = MaterialTheme.colorScheme.primary
+    val s = com.example.lamha.ui.designsystem.LocalSpacing.current
+
+    com.example.lamha.ui.components.LamhaCard(
         modifier = Modifier.fillMaxWidth().clickable { onPlay() },
-        elevation = if (isPlaying) 6.dp else 2.dp,
-        backgroundColor = MaterialTheme.colorScheme.surface
+        containerColor = if (isPlaying) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface,
+        elevation = if (isPlaying) 4.dp else 1.dp,
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                if (isPlaying) Icons.Default.VolumeUp else Icons.Default.PlayCircleOutline, 
+                if (isPlaying) Icons.Default.VolumeUp else Icons.Default.PlayCircleOutline,
                 contentDescription = "Play",
-                tint = if (isPlaying) MaterialTheme.colorScheme.primary else Color.LightGray,
+                tint = if (isPlaying) activeColor else MaterialTheme.colorScheme.outline,
                 modifier = Modifier.size(24.dp)
             )
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(s.lg))
             Column {
                 Text(vocab.word, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-                Text(vocab.meaning, style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+                Text(vocab.meaning, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
-    Spacer(modifier = Modifier.height(12.dp))
 }
 
 // ---------------- COURT UI (Elegant, Serif, Deep) ----------------

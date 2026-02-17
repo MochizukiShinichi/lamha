@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 
 @Immutable
 data class Radius(
+    val xs: Dp = 6.dp,
     val sm: Dp = 12.dp,
     val md: Dp = 16.dp,
     val lg: Dp = 24.dp,
