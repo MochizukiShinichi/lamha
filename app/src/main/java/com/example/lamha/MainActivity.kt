@@ -527,100 +527,102 @@ fun VocabItemRow(vocab: VocabItem, isPlaying: Boolean, onPlay: () -> Unit) {
 
 @Composable
 fun CourtView(section: CourtSection, activeId: String?, onPlay: (String) -> Unit, isDark: Boolean = false) {
-    LazyColumn(contentPadding = PaddingValues(bottom = 100.dp, top = 16.dp, start = 24.dp, end = 24.dp)) {
+    val s = com.example.lamha.ui.designsystem.LocalSpacing.current
+    val r = com.example.lamha.ui.designsystem.LocalRadius.current
+
+    LazyColumn(contentPadding = PaddingValues(bottom = 100.dp, top = s.lg, start = s.xl, end = s.xl)) {
         item {
-            // Shared DNA: Same structure as Street, but Serif font and gold color
             Text(
-                section.title, 
-                style = MaterialTheme.typography.headlineMedium, 
-                fontFamily = FontFamily.Serif, 
-                color = MaterialTheme.colorScheme.primary, 
-                modifier = Modifier.padding(bottom = 24.dp),
+                section.title,
+                style = MaterialTheme.typography.headlineLarge,
+                fontFamily = EczarFont,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = s.xl).fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
         }
 
         item {
-            ClayCard(
-                backgroundColor = if (isDark) Color.Black.copy(alpha = 0.85f) else Color.White.copy(alpha = 0.88f),
-                shape = LeelaShape, // Update to LeelaShape
-                elevation = 10.dp,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+            com.example.lamha.ui.components.LamhaCard(
+                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                elevation = 6.dp,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.6f))
             ) {
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     section.poemLines.forEach { line ->
                         Text(
                             text = line,
-                            style = MaterialTheme.typography.titleLarge,
-                            fontFamily = FontFamily.Serif,
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontFamily = EczarFont,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(s.md))
                     }
                 }
             }
         }
 
-        item { LeelaDivider() }
-        
+        item { com.example.lamha.ui.components.LamhaDivider() }
+
         item {
-            ClayCard(
-                elevation = 3.dp,
-                backgroundColor = if (isDark) Color.Black.copy(alpha = 0.75f) else Color.White.copy(alpha = 0.82f), // 75% Black for analysis card
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+            com.example.lamha.ui.components.LamhaCard(
+                elevation = 2.dp,
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
             ) {
                 Text(
                     section.analysis,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontFamily = FontFamily.Serif,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    fontFamily = LatoFont,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 28.sp
                 )
             }
         }
 
-        item { LeelaDivider() }
-        item { SectionTitle("Lexicon", color = MaterialTheme.colorScheme.primary) }
+        item { com.example.lamha.ui.components.LamhaDivider() }
+        item { com.example.lamha.ui.components.LamhaSectionTitle("Lexicon") }
 
         items(section.wordBreakdown) { word ->
-            CourtLexiconItem(word, activeId == word.id, { onPlay(word.id) }, isDark)
+            CourtLexiconItem(word, activeId == word.id, { onPlay(word.id) })
         }
     }
 }
 
 @Composable
-fun CourtLexiconItem(word: WordAnalysis, isPlaying: Boolean, onPlay: () -> Unit, isDark: Boolean = false) {
+fun CourtLexiconItem(word: WordAnalysis, isPlaying: Boolean, onPlay: () -> Unit) {
     val activeColor = MaterialTheme.colorScheme.primary
-    
-    ClayCard(
+    val s = com.example.lamha.ui.designsystem.LocalSpacing.current
+
+    com.example.lamha.ui.components.LamhaCard(
         modifier = Modifier.fillMaxWidth().clickable { onPlay() },
-        elevation = if (isPlaying) 6.dp else 2.dp,
-        backgroundColor = if (isPlaying) activeColor.copy(alpha = 0.1f) else (if (isDark) Color.Black.copy(alpha = 0.7f) else MaterialTheme.colorScheme.surface)
+        elevation = if (isPlaying) 6.dp else 1.dp,
+        containerColor = if (isPlaying) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+        contentColor = if (isPlaying) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
     ) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    word.word, 
-                    style = MaterialTheme.typography.titleLarge, 
-                    color = if (isPlaying) activeColor else MaterialTheme.colorScheme.onSurface,
-                    fontFamily = FontFamily.Serif
+                    word.word,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontFamily = EczarFont
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (isPlaying) Icon(Icons.Default.VolumeUp, null, tint = activeColor, modifier = Modifier.size(16.dp))
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(s.xs))
             Row {
-                Text("Lit: ", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
-                Text(word.literal, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f), style = MaterialTheme.typography.bodySmall)
+                Text("Lit: ", color = MaterialTheme.colorScheme.outline, style = MaterialTheme.typography.labelMedium)
+                Text(word.literal, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
             }
             Row {
-                Text("Meta: ", color = activeColor.copy(alpha = 0.7f), style = MaterialTheme.typography.bodySmall)
-                Text(word.metaphor, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f), style = MaterialTheme.typography.bodySmall)
+                Text("Meta: ", color = activeColor.copy(alpha = 0.85f), style = MaterialTheme.typography.labelMedium)
+                Text(word.metaphor, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyMedium)
             }
         }
     }
-    Spacer(modifier = Modifier.height(12.dp))
+    Spacer(modifier = Modifier.height(s.md))
 }
 
 // --- SHARED UTILS ---
@@ -666,16 +668,16 @@ fun LeelaDivider() {
 
 @Composable
 fun GrammarCard(grammar: GrammarPoint) {
-    ClayCard(
+    com.example.lamha.ui.components.LamhaCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = GaliShape, // Update to GaliShape
-        backgroundColor = Color.White,
-        elevation = 2.dp
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        elevation = 1.dp
     ) {
         Column {
             Text(grammar.title, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(4.dp))
-            Text(grammar.content, style = MaterialTheme.typography.bodyMedium, color = Color.DarkGray)
+            Text(grammar.content, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
