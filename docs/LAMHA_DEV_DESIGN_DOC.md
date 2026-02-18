@@ -88,7 +88,15 @@ Lamha 的设计不是“课程列表”，而是“双翼对照”的叙事结�
 
 ### 4.1 分支约定（建议）
 - `master`：永远可构建、可截图验收。
+- `download`：**唯一允许存放对外下载 artifact（APK / 截图等）的分支**。以后所有“给人下载的 APK”都放这里（不要再新开 `download-*`）。
 - 临时试验：用短生命周期分支（如 `exp/*`），但**通过验收的版本必须回到 master**。
+
+**合并约定：**
+- 我会先把改动落在 `download` 分支给你验收；
+- 你明确说“可以 merge 回 master”后，我再把对应 commit 合并进 `master` 并 push。
+
+**Release 约定（重要）：**
+- 只有你明确说“make GitHub release（发版）”时，我才会创建 tag / release 并上传 APK。
 
 ### 4.2 Release 锚定规则
 - **Release tag 必须指向“验收通过”的 commit**。
