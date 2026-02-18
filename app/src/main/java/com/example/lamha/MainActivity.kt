@@ -237,23 +237,35 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
     var ttsReady by remember { mutableStateOf(false) }
-    val tts = remember {
-        TextToSpeech(context) { status ->
-            ttsReady = (status == TextToSpeech.SUCCESS)
-        }
-    }
+    var tts by remember { mutableStateOf<TextToSpeech?>(null) }
 
-    DisposableEffect(Unit) {
+    // Initialize TTS in a lifecycle-aware way (callback may fire off-main-thread on some devices).
+    DisposableEffect(context) {
+        val appCtx = context.applicationContext
+        val engine = TextToSpeech(appCtx) { status ->
+            // Ensure state update happens on main thread.
+            try {
+                android.os.Handler(android.os.Looper.getMainLooper()).post {
+                    ttsReady = (status == TextToSpeech.SUCCESS)
+                }
+            } catch (_: Throwable) {
+                ttsReady = (status == TextToSpeech.SUCCESS)
+            }
+        }
+        tts = engine
+
         onDispose {
             mediaPlayer?.stop()
             mediaPlayer?.release()
             mediaPlayer = null
 
             try {
-                tts.stop()
-                tts.shutdown()
+                engine.stop()
+                engine.shutdown()
             } catch (_: Throwable) {
             }
+            tts = null
+            ttsReady = false
         }
     }
 
@@ -261,7 +273,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
         if (ttsReady) {
             // Best-effort: set Hindi (India). If missing, Android will fall back.
             try {
-                tts.language = Locale("hi", "IN")
+                tts?.language = Locale("hi", "IN")
             } catch (_: Throwable) {
             }
         }
@@ -272,7 +284,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
         val cleaned = text.trim()
         if (cleaned.isEmpty()) return
         try {
-            tts.speak(cleaned, TextToSpeech.QUEUE_FLUSH, null, "tts_${System.currentTimeMillis()}")
+            tts?.speak(cleaned, TextToSpeech.QUEUE_FLUSH, null, "tts_${System.currentTimeMillis()}")
         } catch (_: Throwable) {
         }
     }
@@ -488,8 +500,9 @@ fun StreetView(
                 ttsReady = ttsReady,
                 isPlaying = activeId == line.id,
                 onPlayLine = {
-                    // IMPORTANT: for Street dialogue, prefer TTS so text edits always match audio.
-                    onPlay("__tts__", line.hindi)
+                    // IMPORTANT: prefer TTS so text edits always match audio.
+                    // Fallback to raw audio if TTS isn't ready yet (avoid silent taps).
+                    if (ttsReady) onPlay("__tts__", line.hindi) else onPlay(line.id, null)
                 },
                 onSpeakWord = { word -> onPlay("__tts__", word) },
             )
