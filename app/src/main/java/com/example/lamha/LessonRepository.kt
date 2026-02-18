@@ -122,29 +122,29 @@ object LessonRepository {
                 street = StreetSection(
                     title = "Asking for Directions",
                     dialogue = listOf(
-                        DialogueLine("d2_s_1", "Tourist", "माफ़ कीजिये, लाल किला कहाँ है?", "Excuse me, where is the Red Fort?"),
-                        DialogueLine("d2_s_2", "Local", "सीधे जाइये, फिर बाएँ मुड़िये।", "Go straight, then turn left."),
-                        DialogueLine("d2_s_3", "Tourist", "क्या यह यहाँ से दूर है?", "Is it far from here?"),
-                        DialogueLine("d2_s_4", "Local", "नहीं, बस दस मिनट का रास्ता है।", "No, it's just a 10-minute way."),
-                        DialogueLine("d2_s_5", "Tourist", "क्या मैं पैदल जा सकता हूँ?", "Can I go on foot?"),
-                        DialogueLine("d2_s_6", "Local", "हाँ, बिल्कुल। मौसम भी अच्छा है।", "Yes, absolutely. The weather is also nice."),
-                        DialogueLine("d2_s_7", "Tourist", "शुक्रिया भाई साहब।", "Thank you, brother."),
-                        DialogueLine("d2_s_8", "Local", "कोई बात नहीं।", "No problem (It's nothing).")
+                        DialogueLine("d2_s_1", "Tourist", "Excuse me ji—लाल किला किधर है?", "Excuse me—where is the Red Fort?"),
+                        DialogueLine("d2_s_2", "Local", "आप सीधे जाइए, फिर बाएँ मुड़ जाइए।", "Go straight, then turn left."),
+                        DialogueLine("d2_s_3", "Tourist", "क्या ये यहाँ से ज़्यादा दूर है?", "Is it far from here?"),
+                        DialogueLine("d2_s_4", "Local", "नहीं, ज़्यादा दूर नहीं—बस दस मिनट का रास्ता है।", "No, not too far—about a 10-minute walk."),
+                        DialogueLine("d2_s_5", "Tourist", "क्या मैं पैदल ही चला जाऊँ?", "Can I just walk?"),
+                        DialogueLine("d2_s_6", "Local", "हाँ जी, आराम से। मौसम भी अच्छा है।", "Yes, easily. The weather is nice too."),
+                        DialogueLine("d2_s_7", "Tourist", "शुक्रिया जी।", "Thank you."),
+                        DialogueLine("d2_s_8", "Local", "कोई बात नहीं जी।", "No worries.")
                     ),
                     vocabulary = listOf(
-                        VocabItem("d2_v_1", "माफ़ कीजिये (māf kījiye)", "Excuse me/Forgive me", "Formal way to start a conversation with a stranger."),
-                        VocabItem("d2_v_2", "कहाँ (kahāñ)", "Where", "Interrogative adverb."),
-                        VocabItem("d2_v_3", "सीधे (sīdhe)", "Straight", "Direction."),
-                        VocabItem("d2_v_4", "बाएँ (bāeñ)", "Left", "Direction. Right is 'Dāeñ' (दाएँ)."),
-                        VocabItem("d2_v_5", "मुड़िये (muṛiye)", "Turn", "Imperative (Formal). Root: Muṛnā."),
-                        VocabItem("d2_v_6", "दूर (dūr)", "Far", "Adjective/Adverb."),
-                        VocabItem("d2_v_7", "पैदल (paidal)", "On foot", "Mode of travel."),
-                        VocabItem("d2_v_8", "मौसम (mausam)", "Weather", "Noun (M). Arabic origin.")
+                        VocabItem("d2_v_1", "माफ़ कीजिये (māf kījiye)", "Excuse me / sorry", "Polite opener. In daily speech you can also say: ‘Excuse me ji…’ when asking strangers."),
+                        VocabItem("d2_v_2", "कहाँ / किधर (kahaan / kidhar)", "where", "‘कहाँ’ is standard; ‘किधर’ is very common spoken Hindi (Delhi/North)."),
+                        VocabItem("d2_v_3", "सीधे (sīdhe)", "straight", "Direction word: ‘सीधे जाइए’ = go straight."),
+                        VocabItem("d2_v_4", "बाएँ (baaẽ)", "left", "Direction. Spoken Hindi often uses English too: left/right."),
+                        VocabItem("d2_v_5", "मुड़ना / मुड़ जाइए (muRna / muR jaaiye)", "to turn", "Polite direction: ‘बाएँ मुड़ जाइए’ = please turn left."),
+                        VocabItem("d2_v_6", "दूर (door)", "far", "Distance: ‘ज़्यादा दूर’ = too far; ‘कितनी दूर?’ = how far?"),
+                        VocabItem("d2_v_7", "पैदल (paidal)", "on foot", "‘पैदल ही’ = just on foot. ‘पैदल चला जाऊँ?’ is natural."),
+                        VocabItem("d2_v_8", "मौसम (mausam)", "weather", "Everyday noun. ‘मौसम अच्छा है’ = the weather is nice.")
                     ),
                     grammarGuides = listOf(
-                        GrammarPoint("Interrogatives", "Question words like 'Kahāñ' (Where), 'Kyā' (What/Is it?) usually come before the verb or at the start of yes/no questions."),
-                        GrammarPoint("Giving Directions", "Use 'Jāiye' (Go) and 'Muṛiye' (Turn) for polite instructions. 'Seedhe' means straight ahead."),
-                        GrammarPoint("Possession 'Ka'", "'Das minute ka rasta' (10 minute's way). 'Ka' changes to 'Ki' or 'Ke' depending on the gender/number of the object (Rasta is Masc. Sing., so 'Ka').")
+                        GrammarPoint("Everyday question patterns (beginner-friendly)", "Keep questions short and polite:\n\n1) **X कहाँ/किधर है?** = Where is X?\n- ‘लाल किला किधर है?’\n\n2) **क्या … ?** = Yes/No question\n- ‘क्या ये दूर है?’\n\nTip: add **जी** to sound polite: ‘किधर है जी?’"),
+                        GrammarPoint("Giving directions politely (Aap-form)", "Polite direction verbs you will hear a lot:\n- **जाइए** = please go\n- **मुड़ जाइए** = please turn\n\nCommon frame:\n- ‘आप सीधे जाइए, फिर बाएँ मुड़ जाइए।’\n\nMistake to avoid: using only ‘left…’ without a verb. Better: ‘left ले लीजिए’ / ‘बाएँ मुड़ जाइए’."),
+                        GrammarPoint("Time-distance phrase: ‘X minute ka raasta’", "A very common spoken pattern:\n\n- **दस मिनट का रास्ता** = about a 10-minute way\n\nGrammar note: **का/की/के** agrees with the noun:\n- ‘रास्ता’ (m) → ‘का’\n- ‘दूरी’ (f) → ‘की’\n\nExample: ‘यहाँ से बस दस मिनट का रास्ता है।’")
                     )
                 ),
                 court = CourtSection(
@@ -174,29 +174,29 @@ object LessonRepository {
                 street = StreetSection(
                     title = "Ordering Food",
                     dialogue = listOf(
-                        DialogueLine("d3_s_1", "Server", "नमस्ते साहब, क्या लाऊँ?", "Namaste Sir, what should I bring?"),
-                        DialogueLine("d3_s_2", "Customer", "मेनू दीजिये। क्या ताज़ा है?", "Give me the menu. What is fresh?"),
-                        DialogueLine("d3_s_3", "Server", "आज दाल मखनी और पनीर बटर मसाला बहुत अच्छे हैं।", "Today Dal Makhani and Paneer Butter Masala are very good."),
-                        DialogueLine("d3_s_4", "Customer", "एक दाल और दो बटर नान दीजिये।", "Give one Dal and two Butter Naans."),
-                        DialogueLine("d3_s_5", "Server", "मिर्च कैसी रखूँ? ज़्यादा या कम?", "How should I keep the spice? More or less?"),
-                        DialogueLine("d3_s_6", "Customer", "कम मिर्च रखियेगा। और पानी की बोतल भी।", "Keep the spice low (polite future). And a water bottle too."),
-                        DialogueLine("d3_s_7", "Server", "ठीक है। दस मिनट में आता है।", "Okay. It comes in 10 minutes."),
-                        DialogueLine("d3_s_8", "Customer", "जल्दी कीजिये, मुझे भूख लगी है।", "Hurry up, I am hungry.")
+                        DialogueLine("d3_s_1", "Server", "नमस्ते सर। क्या लाऊँ?", "Hello sir—what can I get you?"),
+                        DialogueLine("d3_s_2", "Customer", "मेनू दे दीजिए। आज क्या अच्छा है?", "Please give me the menu. What’s good today?"),
+                        DialogueLine("d3_s_3", "Server", "आज दाल मखनी और पनीर बटर मसाला बढ़िया है।", "Today the dal makhani and paneer butter masala are really good."),
+                        DialogueLine("d3_s_4", "Customer", "एक दाल मखनी और दो बटर नान दे दीजिए।", "One dal makhani and two butter naans, please."),
+                        DialogueLine("d3_s_5", "Server", "मिर्च/मसाला कैसी रखूँ—ज़्यादा या कम?", "How spicy should I make it—more or less?"),
+                        DialogueLine("d3_s_6", "Customer", "कम मिर्च रख दीजिए। और पानी की एक बोतल भी।", "Please keep it less spicy. And one water bottle too."),
+                        DialogueLine("d3_s_7", "Server", "ठीक है सर—दस मिनट में आ जाएगा।", "Okay—it’ll be here in 10 minutes."),
+                        DialogueLine("d3_s_8", "Customer", "थोड़ा जल्दी कर दीजिए, मुझे भूख लगी है।", "Please do it a bit quickly—I’m hungry.")
                     ),
                     vocabulary = listOf(
-                        VocabItem("d3_v_1", "लाऊँ (lāūñ)", "Shall I bring?", "Verb 'Lana' (Bring) in Subjunctive mood."),
-                        VocabItem("d3_v_2", "ताज़ा (tāzā)", "Fresh", "Adjective. Persian origin."),
-                        VocabItem("d3_v_3", "दाल (dāl)", "Lentils", "Staple food."),
-                        VocabItem("d3_v_4", "मिर्च (mirch)", "Chili/Spice", "Noun (F)."),
-                        VocabItem("d3_v_5", "रखूँ (rakhūñ)", "Should I keep?", "Verb 'Rakhna' (Keep/Put) in Subjunctive."),
-                        VocabItem("d3_v_6", "भूख (bhūkh)", "Hunger", "Noun (F). 'Mujhe bhookh lagi hai' = Hunger has struck me."),
-                        VocabItem("d3_v_7", "जल्दी (jaldī)", "Quickly/Hurry", "Adverb."),
-                        VocabItem("d3_v_8", "आता है (ātā hai)", "Comes", "Present tense used for immediate future.")
+                        VocabItem("d3_v_1", "लाऊँ (lāūñ)", "shall I bring? / can I get you?", "Service Hindi uses this a lot: ‘क्या लाऊँ?’ = What can I get you? (very natural at restaurants)."),
+                        VocabItem("d3_v_2", "ताज़ा / अच्छा (taazaa / achchhaa)", "fresh / good", "In restaurants, people often ask ‘आज क्या अच्छा है?’ (What’s good today?) in addition to ‘ताज़ा’."),
+                        VocabItem("d3_v_3", "दाल / दाल मखनी (daal / daal makhni)", "lentils / dal makhani", "Common dish name. Saying the full dish is more natural: ‘एक दाल मखनी…’."),
+                        VocabItem("d3_v_4", "मिर्च / मसाला (mirch / masaalaa)", "chili / spice", "Both are used. ‘मसाला’ is broader for spice level."),
+                        VocabItem("d3_v_5", "रखूँ (rakhūñ)", "should I keep/make it?", "‘कैसी रखूँ?’ = how should I make it/keep it (spice level). Natural service phrasing."),
+                        VocabItem("d3_v_6", "भूख (bhookh)", "hunger", "Most natural sentence: ‘मुझे भूख लगी है।’ (lit. hunger has struck me)."),
+                        VocabItem("d3_v_7", "जल्दी / थोड़ा जल्दी (jaldi / thodaa jaldi)", "quickly / a bit quickly", "To sound polite: ‘थोड़ा जल्दी कर दीजिए’ (Please do it a bit quickly)."),
+                        VocabItem("d3_v_8", "आ जाएगा (aa jaayegaa)", "will arrive / will come", "Very common spoken future: ‘दस मिनट में आ जाएगा’।")
                     ),
                     grammarGuides = listOf(
-                        GrammarPoint("Subjunctive 'May I'", "Verbs ending in '-ūñ' (लाऊँ, रखूँ) imply 'Shall I?' or 'May I?'. It asks for permission or instruction."),
-                        GrammarPoint("Feeling Sensations", "In Hindi, you don't 'be' hungry, hunger 'happens' to you. 'Mujhe bhookh lagi hai' (To me, hunger is felt/attached). Same for thirst (pyaas) and cold (thand)."),
-                        GrammarPoint("Polite Future", "'Rakhiyega' is a polite future imperative. 'Please keep it (in the future)'.")
+                        GrammarPoint("Service question: ‘क्या लाऊँ?’ (very common)", "In restaurants/stalls, staff often ask:\n\n- **क्या लाऊँ?** = What can I get you?\n- **क्या लेंगे?** = What will you have?\n\nThese are natural, polite, and beginner-friendly patterns."),
+                        GrammarPoint("‘मुझे भूख लगी है’ (how Hindi expresses hunger)", "Hindi often expresses sensations as something happening to you:\n\n- **मुझे भूख लगी है।** = I’m hungry\n- **मुझे प्यास लगी है।** = I’m thirsty\n\nBeginner tip: memorize these as fixed phrases."),
+                        GrammarPoint("Polite requests: ‘… कर दीजिए / … दे दीजिए’", "To keep a coworker-level polite tone, use:\n\n- **मेनू दे दीजिए।** (please give the menu)\n- **कम मिर्च रख दीजिए।** (please keep it less spicy)\n- **थोड़ा जल्दी कर दीजिए।** (please do it a bit quickly)\n\nThese sound natural and not textbook-stiff.")
                     )
                 ),
                 court = CourtSection(
@@ -224,29 +224,29 @@ object LessonRepository {
                 street = StreetSection(
                     title = "Bargaining at the Market",
                     dialogue = listOf(
-                        DialogueLine("d4_s_1", "Shopper", "यह कुर्ता कितने का है?", "How much is this Kurta?"),
-                        DialogueLine("d4_s_2", "Shopkeeper", "पूरी तरह से रेशम है, ५००० रुपये।", "It is entirely silk, 5000 rupees."),
-                        DialogueLine("d4_s_3", "Shopper", "अरे! बहुत महंगा है। सही दाम लगाइये।", "Oh! It's very expensive. Apply the right price."),
-                        DialogueLine("d4_s_4", "Shopkeeper", "मैडम, क्वालिटी देखिये। अच्छा, ४५०० दीजिये।", "Madam, look at the quality. Okay, give 4500."),
-                        DialogueLine("d4_s_5", "Shopper", "नहीं, मैं २५०० से ज़्यादा नहीं दूँगी।", "No, I will not give more than 2500."),
-                        DialogueLine("d4_s_6", "Shopkeeper", "इतने में तो मुझे भी नहीं मिला! ३५०० लास्ट।", "I didn't even get it for that much! 3500 last."),
-                        DialogueLine("d4_s_7", "Shopper", "ठीक है, ३००० लीजिये, नहीं तो मैं जा रही हूँ।", "Okay, take 3000, otherwise I am going."),
-                        DialogueLine("d4_s_8", "Shopkeeper", "चलिए, आपकी बात रही। पैक कर देता हूँ।", "Alright, let it be your way (your word remains). I will pack it.")
+                        DialogueLine("d4_s_1", "Shopper", "ये कुर्ता कितने का है, भैया?", "How much is this kurta, bhaiya?"),
+                        DialogueLine("d4_s_2", "Shopkeeper", "पूरा रेशम है जी—५,००० रुपये।", "It’s pure silk—5,000 rupees."),
+                        DialogueLine("d4_s_3", "Shopper", "अरे, ये तो बहुत महँगा है। थोड़ा कम हो जाएगा क्या?", "Oh, that’s too expensive. Can you do a little less?"),
+                        DialogueLine("d4_s_4", "Shopkeeper", "मैडम, क्वालिटी देखिए। चलिए, ४५०० कर देते हैं।", "Ma’am, look at the quality. Okay, I’ll make it 4,500."),
+                        DialogueLine("d4_s_5", "Shopper", "ठीक है, लेकिन २५०० से ज़्यादा नहीं दूँगी।", "Okay, but I won’t pay more than 2,500."),
+                        DialogueLine("d4_s_6", "Shopkeeper", "इतने में तो मुझे भी नहीं पड़ता! ३५०० लास्ट।", "Even I don’t get it for that much! 3,500 final."),
+                        DialogueLine("d4_s_7", "Shopper", "३,००० कर लीजिए—वरना मैं जा रही हूँ।", "Make it 3,000—otherwise I’m leaving."),
+                        DialogueLine("d4_s_8", "Shopkeeper", "अच्छा ठीक है, आपकी बात मान ली। पैक कर देता हूँ।", "Alright, fine—I’ll agree. I’ll pack it.")
                     ),
                     vocabulary = listOf(
-                        VocabItem("d4_v_1", "कुर्ता (kurtā)", "Tunic/Shirt", "Traditional upper garment."),
-                        VocabItem("d4_v_2", "कितने का (kitne kā)", "Of how much?", "Common phrase for asking price."),
-                        VocabItem("d4_v_3", "महंगा (mahangā)", "Expensive", "Adjective. Antonym: Sasta (Cheap)."),
-                        VocabItem("d4_v_4", "दाम (dām)", "Price/Rate", "Noun (M)."),
-                        VocabItem("d4_v_5", "लगाइये (lagāiye)", "Apply/Fix", "Context: Fix the price."),
-                        VocabItem("d4_v_6", "क्वालिटी (quality)", "Quality", "English loan word used commonly."),
-                        VocabItem("d4_v_7", "लास्ट (last)", "Last/Final", "Used for 'Final Price'."),
-                        VocabItem("d4_v_8", "पैक (pack)", "Pack", "Verb: Pack karna.")
+                        VocabItem("d4_v_1", "कुर्ता (kurtā)", "kurta", "Common clothing item. Often used exactly as ‘कुर्ता’."),
+                        VocabItem("d4_v_2", "कितने का (kitne kaa)", "how much is it", "Price question pattern: ‘ये कितने का है?’ (lit. of how much)."),
+                        VocabItem("d4_v_3", "महँगा (mahangā)", "expensive", "Opposite: सस्ता. In speech: ‘बहुत महँगा है’."),
+                        VocabItem("d4_v_4", "दाम / रेट (daam / rate)", "price", "‘दाम’ is Hindi; ‘रेट’ is very common market Hinglish."),
+                        VocabItem("d4_v_5", "कम हो जाएगा? (kam ho jaayegaa?)", "can it be less?", "Soft bargaining frame (polite): ‘थोड़ा कम हो जाएगा क्या?’"),
+                        VocabItem("d4_v_6", "क्वालिटी (quality)", "quality", "Very common loanword used by sellers."),
+                        VocabItem("d4_v_7", "लास्ट (last)", "final (price)", "Market speech for “final offer”: ‘३५०० लास्ट’."),
+                        VocabItem("d4_v_8", "पैक करना (pack karnaa)", "to pack", "‘पैक कर देता हूँ’ = I’ll pack it (for you).")
                     ),
                     grammarGuides = listOf(
-                        GrammarPoint("Genitive Price", "Asking price uses 'Ka/Ki'. 'Yeh kitne ka hai?' (Of how much is this?)."),
-                        GrammarPoint("Conditionals", "'Nahi to' means 'Otherwise' or 'Else'. '3000 lijiye, nahi to main ja rahi hoon' (Take 3000, else I am going)."),
-                        GrammarPoint("Compound Verbs", "'Pack kar deta hoon'. 'Dena' (to give) here adds the nuance of doing something for someone else (benefactive).")
+                        GrammarPoint("Asking price: ‘ये कितने का है?’", "Most common way to ask price:\n\n- **ये कितने का है?** = How much is this?\n\nGrammar: **का/की/के** agrees with the item:\n- कुर्ता (m) → ‘कितने का’\n- साड़ी (f) → ‘कितनी की’\n\nExample: ‘ये कुर्ता कितने का है?’"),
+                        GrammarPoint("Soft negotiation: ‘थोड़ा कम हो जाएगा?’ + ‘वरना…’", "Two useful patterns:\n\n1) **थोड़ा कम हो जाएगा क्या?** = Can you do a little less? (polite)\n2) **… वरना …** = otherwise\n- ‘३,००० कर लीजिए—वरना मैं जा रही हूँ।’\n\nBeginner tip: These sound natural without slang."),
+                        GrammarPoint("Compound verbs for shop talk: ‘मान लेना / कर देना’", "Spoken Hindi uses helper verbs a lot:\n\n- **X कर देना** = set/do X (price)\n  - ‘४५०० कर देते हैं।’\n- **बात मान लेना** = agree\n  - ‘आपकी बात मान ली।’\n\nThese add a natural, everyday tone.")
                     )
                 ),
                 court = CourtSection(
@@ -276,29 +276,29 @@ object LessonRepository {
                 street = StreetSection(
                     title = "Introducing Family",
                     dialogue = listOf(
-                        DialogueLine("d5_s_1", "Host", "आइये, मेरे परिवार से मिलिये।", "Come, meet my family."),
-                        DialogueLine("d5_s_2", "Guest", "ज़रूर। ये कौन हैं?", "Sure. Who is this?"),
+                        DialogueLine("d5_s_1", "Host", "आइए, मेरे परिवार से मिलिए।", "Come, please meet my family."),
+                        DialogueLine("d5_s_2", "Guest", "ज़रूर। ये कौन हैं?", "Sure. Who is this?"),
                         DialogueLine("d5_s_3", "Host", "ये मेरे पिताजी हैं, और वो मेरी माँ हैं।", "This is my father, and that is my mother."),
-                        DialogueLine("d5_s_4", "Guest", "नमस्ते अंकल, नमस्ते आंटी।", "Namaste Uncle, Namaste Aunty."),
-                        DialogueLine("d5_s_5", "Host", "और ये मेरा छोटा भाई है, राहुल।", "And this is my younger brother, Rahul."),
-                        DialogueLine("d5_s_6", "Guest", "तुम क्या करते हो, राहुल?", "What do you do, Rahul?"),
-                        DialogueLine("d5_s_7", "Rahul", "मैं कॉलेज में पढ़ता हूँ।", "I study in college."),
-                        DialogueLine("d5_s_8", "Host", "हम सब साथ रहते हैं।", "We all live together.")
+                        DialogueLine("d5_s_4", "Guest", "नमस्ते अंकल, नमस्ते आंटी।", "Hello Uncle, hello Aunty."),
+                        DialogueLine("d5_s_5", "Host", "और ये मेरा छोटा भाई है—राहुल।", "And this is my younger brother—Rahul."),
+                        DialogueLine("d5_s_6", "Guest", "राहुल, आप क्या करते हैं?", "Rahul, what do you do?"),
+                        DialogueLine("d5_s_7", "Rahul", "मैं कॉलेज में पढ़ता हूँ।", "I study in college."),
+                        DialogueLine("d5_s_8", "Host", "हम सब साथ ही रहते हैं।", "We all live together.")
                     ),
                     vocabulary = listOf(
-                        VocabItem("d5_v_1", "परिवार (parivār)", "Family", "Noun (M)."),
-                        VocabItem("d5_v_2", "मिलिये (miliye)", "Meet", "Imperative/Request. 'Se miliye' = Meet with."),
-                        VocabItem("d5_v_3", "पिताजी (pitājī)", "Father", "Respectful term."),
-                        VocabItem("d5_v_4", "माँ (mā̃)", "Mother", "Noun (F)."),
-                        VocabItem("d5_v_5", "छोटा (chhoṭā)", "Small/Younger", "Adjective. 'Bada' is Big/Older."),
-                        VocabItem("d5_v_6", "भाई (bhāī)", "Brother", "Noun (M)."),
-                        VocabItem("d5_v_7", "पढ़ता (paṛhtā)", "Study/Read", "Verb 'Padhna'."),
-                        VocabItem("d5_v_8", "साथ (sāth)", "Together", "Adverb. 'Ke saath' = With.")
+                        VocabItem("d5_v_1", "परिवार (parivār)", "family", "Neutral word for family (formal + daily)."),
+                        VocabItem("d5_v_2", "मिलिए (miliye)", "please meet", "Polite form used when introducing people: ‘परिवार से मिलिए’।"),
+                        VocabItem("d5_v_3", "पिताजी (pitaaji)", "father (respectful)", "Respectful word. Daily alternatives: पापा/पापा जी."),
+                        VocabItem("d5_v_4", "माँ (maã)", "mother", "Daily alternatives: मम्मी/मम्मी जी; ‘माँ’ is also common and neutral."),
+                        VocabItem("d5_v_5", "छोटा (chhoṭā)", "younger / small", "Used for younger sibling: ‘छोटा भाई’. Opposite: बड़ा."),
+                        VocabItem("d5_v_6", "भाई (bhaai)", "brother", "Can mean literal brother; also used as friendly address (‘भैया’)."),
+                        VocabItem("d5_v_7", "पढ़ना (paRhnaa)", "to study/read", "‘मैं कॉलेज में पढ़ता हूँ’ = I study in college (habitual)."),
+                        VocabItem("d5_v_8", "साथ (saath)", "together / with", "‘साथ रहना’ = to live together; ‘के साथ’ = with.")
                     ),
                     grammarGuides = listOf(
-                        GrammarPoint("Demonstratives Yeh/Woh", "'Yeh' (This/He/She close) and 'Woh' (That/He/She far). Used for introducing people. Plural/Respect forms are 'Ye' and 'Ve' (though spoken Hindi often uses Yeh/Woh for all)."),
-                        GrammarPoint("Respect 'Ji'", "Adding 'Ji' to relations (Pitaji, Mataji) is crucial for showing respect to elders."),
-                        GrammarPoint("Present Habitual", "Ta/Te/Ti suffixes. 'Padhta hoon' (I study - generally). 'Rehte hain' (We live - generally). Formula: Stem + ta/te/ti + hun/hai/hain.")
+                        GrammarPoint("Introducing people: ‘ये… / वो…’", "To introduce people nearby vs farther:\n\n- **ये** = this / he/she (near)\n- **वो** = that / he/she (far)\n\nExample:\n- ‘ये मेरे पिताजी हैं, और वो मेरी माँ हैं।’\n\nBeginner tip: in conversation, ये/वो is often used even if distance isn’t literal."),
+                        GrammarPoint("Respect markers: ‘जी’ + polite verb", "To sound coworker-level polite:\n\n- Add **जी**: ‘नमस्ते जी’, ‘धन्यवाद जी’\n- Use **आप** + polite verb endings: ‘आप क्या करते हैं?’\n\nThis keeps the tone respectful without sounding textbook-heavy."),
+                        GrammarPoint("Present habitual (daily routine): ‘मैं … पढ़ता/पढ़ती हूँ’", "Habitual present describes routines/habits:\n\nPattern: **verb-stem + ता/ती/ते + हूँ/है/हैं**\n- ‘मैं पढ़ता हूँ।’ (m) / ‘मैं पढ़ती हूँ।’ (f)\n- ‘हम रहते हैं।’\n\nCommon mistake: using only infinitive ‘मैं पढ़ना’ (incorrect).")
                     )
                 ),
                 court = CourtSection(
@@ -328,29 +328,29 @@ object LessonRepository {
                 street = StreetSection(
                     title = "At the Pharmacy",
                     dialogue = listOf(
-                        DialogueLine("d6_s_1", "Patient", "मुझे बुखार और सरदर्द है।", "I have a fever and headache."),
+                        DialogueLine("d6_s_1", "Patient", "मुझे बुखार है और सर में दर्द है।", "I have a fever and a headache."),
                         DialogueLine("d6_s_2", "Chemist", "कब से है?", "Since when?"),
-                        DialogueLine("d6_s_3", "Patient", "कल रात से। क्या कोई दवा है?", "Since last night. Is there any medicine?"),
-                        DialogueLine("d6_s_4", "Chemist", "ये लीजिये पैरासिटामोल। दिन में दो बार खाइये।", "Take this Paracetamol. Eat (take) it twice a day."),
-                        DialogueLine("d6_s_5", "Patient", "क्या इसे खाने के बाद लेना है?", "Should I take it after food?"),
-                        DialogueLine("d6_s_6", "Chemist", "हाँ, खाली पेट मत लीजिये।", "Yes, don't take it on an empty stomach."),
-                        DialogueLine("d6_s_7", "Patient", "गले में भी दर्द है।", "There is pain in the throat too."),
-                        DialogueLine("d6_s_8", "Chemist", "तो ये कफ सिरप भी ले लीजिये।", "Then take this cough syrup also.")
+                        DialogueLine("d6_s_3", "Patient", "कल रात से। कृपया कोई दवा दे दीजिए।", "Since last night. Please give me some medicine."),
+                        DialogueLine("d6_s_4", "Chemist", "ये लीजिए पैरासिटामोल। दिन में दो बार लीजिए।", "Here is paracetamol. Take it twice a day."),
+                        DialogueLine("d6_s_5", "Patient", "क्या ये खाना खाने के बाद लेना है?", "Should I take it after food?"),
+                        DialogueLine("d6_s_6", "Chemist", "हाँ, खाली पेट मत लीजिए।", "Yes, don’t take it on an empty stomach."),
+                        DialogueLine("d6_s_7", "Patient", "गले में भी दर्द है।", "My throat hurts too."),
+                        DialogueLine("d6_s_8", "Chemist", "तो ये कफ सिरप भी ले लीजिए।", "Then please take this cough syrup as well.")
                     ),
                     vocabulary = listOf(
-                        VocabItem("d6_v_1", "बुखार (bukhār)", "Fever", "Noun (M)."),
-                        VocabItem("d6_v_2", "सरदर्द (sardard)", "Headache", "Sar (Head) + Dard (Pain)."),
-                        VocabItem("d6_v_3", "कल (kal)", "Yesterday/Tomorrow", "Depends on tense. Here 'Kal raat' = Last night."),
-                        VocabItem("d6_v_4", "दवा (davā)", "Medicine", "Noun (F)."),
-                        VocabItem("d6_v_5", "बार (bār)", "Time(s)", "Din mein do baar = Two times in a day."),
-                        VocabItem("d6_v_6", "पेट (peṭ)", "Stomach", "Noun (M)."),
-                        VocabItem("d6_v_7", "खाली (khālī)", "Empty", "Adjective."),
-                        VocabItem("d6_v_8", "गला (galā)", "Throat", "Noun (M).")
+                        VocabItem("d6_v_1", "बुखार (bukhaar)", "fever", "Common illness word. Natural: ‘मुझे बुखार है’।"),
+                        VocabItem("d6_v_2", "सरदर्द (sardard)", "headache", "Compound: सर (head) + दर्द (pain). Also said as ‘सर में दर्द’."),
+                        VocabItem("d6_v_3", "कल (kal)", "yesterday / tomorrow", "Context decides. Here: ‘कल रात से’ = since last night."),
+                        VocabItem("d6_v_4", "दवा (davaa)", "medicine", "General word for medicine (not a specific brand)."),
+                        VocabItem("d6_v_5", "बार (baar)", "time(s)", "Frequency: ‘दिन में दो बार’ = twice a day."),
+                        VocabItem("d6_v_6", "पेट (peT)", "stomach", "‘खाली पेट’ = empty stomach."),
+                        VocabItem("d6_v_7", "खाली (khaali)", "empty", "Used in many contexts: empty stomach, empty room, etc."),
+                        VocabItem("d6_v_8", "गला (galaa)", "throat", "‘गले में दर्द’ = throat pain.")
                     ),
                     grammarGuides = listOf(
-                        GrammarPoint("Having an Illness", "Like hunger, illness 'is' to you. 'Mujhe bukhar hai' (To me, there is fever)."),
-                        GrammarPoint("Time 'Se'", "'Kab se?' (Since when?). 'Kal se' (Since yesterday). 'Se' indicates the starting point of time."),
-                        GrammarPoint("Prohibitive 'Mat'", "For 'Don't', use 'Mat' with imperatives. 'Mat lijiye' (Don't take). 'Nahi' is for simple negation, 'Mat' is for commands.")
+                        GrammarPoint("Illness pattern: ‘मुझे ___ है’", "Common Hindi pattern for health states:\n\n- **मुझे बुखार है।** = I have a fever\n- **मुझे सर में दर्द है।** = I have a headache\n\nBeginner tip: don’t say ‘मैं बुखार हूँ’ (wrong)."),
+                        GrammarPoint("Time starting point: ‘… से’", "‘से’ marks the starting point (since/from):\n\n- ‘कल रात से।’ = since last night\n- ‘सुबह से।’ = since morning\n\nVery common Q&A:\n- ‘कब से है?’ → ‘कल रात से।’"),
+                        GrammarPoint("Don’t-do form: ‘मत + verb’ (polite vs casual)", "To say “don’t …”:\n\n- Casual: **मत लो**\n- Polite: **मत लीजिए**\n\nIn this lesson: ‘खाली पेट मत लीजिए।’ (Please don’t take it on an empty stomach).")
                     )
                 ),
                 court = CourtSection(
@@ -378,29 +378,29 @@ object LessonRepository {
                 street = StreetSection(
                     title = "Travel by Train",
                     dialogue = listOf(
-                        DialogueLine("d7_s_1", "Traveler", "मुंबई की ट्रेन किस प्लेटफार्म पर आएगी?", "On which platform will the Mumbai train come?"),
-                        DialogueLine("d7_s_2", "Official", "प्लेटफार्म नंबर चार पर।", "On platform number four."),
+                        DialogueLine("d7_s_1", "Traveler", "मुंबई वाली ट्रेन किस प्लेटफॉर्म पर आएगी?", "Which platform will the Mumbai train come on?"),
+                        DialogueLine("d7_s_2", "Official", "प्लेटफॉर्म नंबर चार पर।", "Platform number four."),
                         DialogueLine("d7_s_3", "Traveler", "क्या ट्रेन समय पर है?", "Is the train on time?"),
                         DialogueLine("d7_s_4", "Official", "नहीं, आधा घंटा लेट है।", "No, it is half an hour late."),
                         DialogueLine("d7_s_5", "Traveler", "क्या मेरा टिकट कन्फर्म है?", "Is my ticket confirmed?"),
-                        DialogueLine("d7_s_6", "Official", "पीएनआर नंबर दीजिये।", "Give the PNR number."),
-                        DialogueLine("d7_s_7", "Traveler", "ये लीजिये।", "Take this."),
-                        DialogueLine("d7_s_8", "Official", "हाँ, कोच बी-२, सीट १५।", "Yes, Coach B-2, Seat 15.")
+                        DialogueLine("d7_s_6", "Official", "कृपया पीएनआर नंबर बताइए।", "Please tell me the PNR number."),
+                        DialogueLine("d7_s_7", "Traveler", "ये लीजिए।", "Here you go."),
+                        DialogueLine("d7_s_8", "Official", "हाँ, कोच बी-२, सीट १५।", "Yes—Coach B-2, Seat 15.")
                     ),
                     vocabulary = listOf(
-                        VocabItem("d7_v_1", "किस (kis)", "Which", "Oblique form of 'Kaun'."),
-                        VocabItem("d7_v_2", "आएगी (āegī)", "Will come", "Future tense (F)."),
-                        VocabItem("d7_v_3", "समय (samay)", "Time", "Noun (M). Formal. 'Waqt' is Urdu/Colloquial."),
-                        VocabItem("d7_v_4", "पर (par)", "On/At", "Postposition."),
-                        VocabItem("d7_v_5", "आधा (ādhā)", "Half", "Adjective."),
-                        VocabItem("d7_v_6", "घंटा (ghanṭā)", "Hour/Bell", "Noun (M)."),
-                        VocabItem("d7_v_7", "लेट (late)", "Late", "English loan."),
-                        VocabItem("d7_v_8", "सीट (seat)", "Seat", "English loan.")
+                        VocabItem("d7_v_1", "किस (kis)", "which", "Oblique form used before postpositions: ‘किस प्लेटफॉर्म पर…’."),
+                        VocabItem("d7_v_2", "आएगी (aaegii)", "will come/arrive", "Future (f). Many speakers treat ‘ट्रेन’ as feminine: ‘ट्रेन आएगी’."),
+                        VocabItem("d7_v_3", "समय (samay)", "time", "More formal/neutral. Colloquial: टाइम. Both are used."),
+                        VocabItem("d7_v_4", "पर (par)", "on/at", "Location postposition: ‘प्लेटफॉर्म पर’. Spoken variant: ‘पे’."),
+                        VocabItem("d7_v_5", "आधा (aadhaa)", "half", "Used with time: आधा घंटा = half an hour."),
+                        VocabItem("d7_v_6", "घंटा (ghanTaa)", "hour", "Also used for duration in speech."),
+                        VocabItem("d7_v_7", "लेट (late)", "late", "Common loanword: ‘आधा घंटा लेट है’."),
+                        VocabItem("d7_v_8", "सीट (seat)", "seat", "Common loanword for seat number in trains.")
                     ),
                     grammarGuides = listOf(
-                        GrammarPoint("Oblique 'Kis'", "When 'Kaun' (Who/Which) is followed by a postposition like 'Par' (On), it becomes 'Kis'. 'Kaun par' is wrong; 'Kis par' is right."),
-                        GrammarPoint("Future Gender", "'Train' is considered feminine in Hindi. So it 'aayegi' (F), not 'aayega' (M)."),
-                        GrammarPoint("Telling Time", "'Samay par' = On time. 'Der se' = Late (with delay).")
+                        GrammarPoint("Oblique ‘kis’ + postposition", "When ‘which’ is followed by a postposition (पर/में/से), use **किस**:\n\n- ‘किस प्लेटफॉर्म पर?’\n- ‘किस ट्रेन से?’\n\nCommon mistake: ‘कौन पर’ (wrong)."),
+                        GrammarPoint("Future + gender agreement (practical)", "In spoken Hindi, some nouns are treated with fixed gender. ‘ट्रेन’ is often treated as feminine:\n\n- ‘ट्रेन **आएगी**।’\n\nBeginner tip: don’t stress too much—focus on being understood, then refine gender agreement gradually."),
+                        GrammarPoint("Time status phrases: on time / late", "Useful travel phrases:\n\n- **समय पर** = on time\n- **लेट है** = is late\n- **आधा घंटा लेट** = half an hour late\n\nExample: ‘ट्रेन समय पर है?’ → ‘नहीं, आधा घंटा लेट है।’")
                     )
                 ),
                 court = CourtSection(
