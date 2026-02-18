@@ -2,6 +2,8 @@ package com.example.lamha
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import java.util.Locale
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
@@ -10,6 +12,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,6 +28,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -34,6 +40,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
@@ -222,20 +230,54 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
 @Composable
 fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
     var selectedTab by remember { mutableStateOf(0) } // 0 = Street, 1 = Court
-    
-    // Audio Player
+
+    // Audio Player (raw audio preferred) + Local TTS fallback
     val context = LocalContext.current
     var activeAudioId by remember { mutableStateOf<String?>(null) }
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
+
+    var ttsReady by remember { mutableStateOf(false) }
+    val tts = remember {
+        TextToSpeech(context) { status ->
+            ttsReady = (status == TextToSpeech.SUCCESS)
+        }
+    }
 
     DisposableEffect(Unit) {
         onDispose {
             mediaPlayer?.stop()
             mediaPlayer?.release()
+            mediaPlayer = null
+
+            try {
+                tts.stop()
+                tts.shutdown()
+            } catch (_: Throwable) {
+            }
         }
     }
 
-    fun playAudio(id: String) {
+    LaunchedEffect(ttsReady) {
+        if (ttsReady) {
+            // Best-effort: set Hindi (India). If missing, Android will fall back.
+            try {
+                tts.language = Locale("hi", "IN")
+            } catch (_: Throwable) {
+            }
+        }
+    }
+
+    fun speakTts(text: String) {
+        if (!ttsReady) return
+        val cleaned = text.trim()
+        if (cleaned.isEmpty()) return
+        try {
+            tts.speak(cleaned, TextToSpeech.QUEUE_FLUSH, null, "tts_${System.currentTimeMillis()}")
+        } catch (_: Throwable) {
+        }
+    }
+
+    fun playAudio(id: String, fallbackTtsText: String? = null) {
         if (activeAudioId == id && mediaPlayer?.isPlaying == true) {
             mediaPlayer?.stop()
             activeAudioId = null
@@ -253,6 +295,9 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                 start()
             }
             activeAudioId = id
+        } else if (fallbackTtsText != null) {
+            // Fallback so new/edited content always has audio.
+            speakTts(fallbackTtsText)
         }
     }
 
@@ -361,7 +406,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                         .padding(padding)
                 ) { tab ->
                     if (tab == 0) {
-                        StreetView(lesson.street, activeAudioId, ::playAudio)
+                        StreetView(lesson.street, activeAudioId) { id, ttsText -> playAudio(id, ttsText) }
                     } else {
                         MaterialTheme(colorScheme = CourtPalette) {
                             CourtView(lesson.court, activeAudioId, ::playAudio)
@@ -409,7 +454,7 @@ fun TabButton(text: String, subText: String, icon: androidx.compose.ui.graphics.
 // ---------------- STREET UI (Clean, Modern, Functional) ----------------
 
 @Composable
-fun StreetView(section: StreetSection, activeId: String?, onPlay: (String) -> Unit) {
+fun StreetView(section: StreetSection, activeId: String?, onPlay: (id: String, ttsFallback: String?) -> Unit) {
     val s = com.example.lamha.ui.designsystem.LocalSpacing.current
     LazyColumn(
         contentPadding = PaddingValues(bottom = 100.dp, top = s.lg, start = s.lg, end = s.lg),
@@ -426,13 +471,20 @@ fun StreetView(section: StreetSection, activeId: String?, onPlay: (String) -> Un
         }
 
         items(section.dialogue) { line ->
-            StreetBubble(line, activeId == line.id) { onPlay(line.id) }
+            StreetBubble(line, section.vocabulary, activeId == line.id,
+                onPlayLine = { onPlay(line.id, line.hindi) },
+                onSpeakWord = { word -> onPlay("__tts__", word) }
+            )
         }
 
         item { com.example.lamha.ui.components.LamhaSectionTitle("Vocabulary") }
 
         items(section.vocabulary) { vocab ->
-            VocabItemRow(vocab, activeId == vocab.id) { onPlay(vocab.id) }
+            VocabItemRow(vocab, activeId == vocab.id) {
+                // Prefer raw vocab audio; fallback to speaking the Hindi token (best-effort extraction)
+                val hindiToken = vocab.word.substringBefore("(").trim().ifEmpty { vocab.word }
+                onPlay(vocab.id, hindiToken)
+            }
         }
 
         item { com.example.lamha.ui.components.LamhaSectionTitle("Grammar Notes") }
@@ -444,7 +496,13 @@ fun StreetView(section: StreetSection, activeId: String?, onPlay: (String) -> Un
 }
 
 @Composable
-fun StreetBubble(line: DialogueLine, isPlaying: Boolean, onPlay: () -> Unit) {
+fun StreetBubble(
+    line: DialogueLine,
+    vocab: List<VocabItem>,
+    isPlaying: Boolean,
+    onPlayLine: () -> Unit,
+    onSpeakWord: (String) -> Unit,
+) {
     val s = com.example.lamha.ui.designsystem.LocalSpacing.current
     val r = com.example.lamha.ui.designsystem.LocalRadius.current
 
@@ -468,8 +526,34 @@ fun StreetBubble(line: DialogueLine, isPlaying: Boolean, onPlay: () -> Unit) {
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f),
             modifier = Modifier.padding(horizontal = s.sm, vertical = s.xs)
         )
+        var selectedVocab by remember { mutableStateOf<VocabItem?>(null) }
+        var selectedWord by remember { mutableStateOf<String?>(null) }
+
+        fun normalizeToken(t: String): String {
+            return t
+                .trim()
+                .trim('।', ',', '?', '!', ':', ';', '"', '\'', '’', '“', '”', '—', '-', '(', ')')
+        }
+
+        fun findVocabForToken(token: String): VocabItem? {
+            val key = normalizeToken(token)
+            if (key.isEmpty()) return null
+            return vocab.firstOrNull { v ->
+                val vKey = normalizeToken(v.word.substringBefore("(")).lowercase()
+                vKey == key.lowercase()
+            }
+        }
+
         Surface(
-            modifier = Modifier.widthIn(max = 340.dp).clickable { onPlay() },
+            modifier = Modifier.widthIn(max = 340.dp).clickable {
+                // Tap bubble: if a word popup is open, close it; otherwise play the full line.
+                if (selectedWord != null) {
+                    selectedWord = null
+                    selectedVocab = null
+                } else {
+                    onPlayLine()
+                }
+            },
             color = containerColor,
             contentColor = contentColor,
             shadowElevation = elevation,
@@ -477,12 +561,87 @@ fun StreetBubble(line: DialogueLine, isPlaying: Boolean, onPlay: () -> Unit) {
             border = border
         ) {
             Column(modifier = Modifier.padding(s.md)) {
-                Text(line.hindi, style = MaterialTheme.typography.bodyLarge)
+                val tokens = remember(line.hindi) {
+                    // Simple tokenization: split on whitespace; good enough for MVP.
+                    line.hindi.split(Regex("\\s+")).filter { it.isNotBlank() }
+                }
+
+                val highlightColor = MaterialTheme.colorScheme.primary
+                val annotated = remember(tokens, selectedWord, highlightColor) {
+                    buildAnnotatedString {
+                        tokens.forEachIndexed { idx, t ->
+                            val token = t
+                            val norm = normalizeToken(token)
+                            val isSel = selectedWord != null && normalizeToken(selectedWord!!) == norm && norm.isNotEmpty()
+                            val start = length
+                            append(token)
+                            val end = length
+                            if (norm.isNotEmpty()) {
+                                addStringAnnotation(tag = "WORD", annotation = token, start = start, end = end)
+                                if (isSel) {
+                                    addStyle(SpanStyle(color = highlightColor, fontWeight = FontWeight.Bold), start, end)
+                                }
+                            }
+                            if (idx != tokens.lastIndex) append(" ")
+                        }
+                    }
+                }
+
+                ClickableText(
+                    text = annotated,
+                    style = MaterialTheme.typography.bodyLarge.copy(color = contentColor),
+                    onClick = { offset ->
+                        val anns = annotated.getStringAnnotations(tag = "WORD", start = offset, end = offset)
+                        val clicked = anns.firstOrNull()?.item
+                        if (clicked != null) {
+                            val match = findVocabForToken(clicked)
+                            selectedWord = clicked
+                            selectedVocab = match
+                            onSpeakWord(normalizeToken(clicked))
+                        }
+                    }
+                )
+
                 Text(
                     line.english,
                     style = MaterialTheme.typography.bodyMedium,
                     color = contentColor.copy(alpha = 0.72f)
                 )
+
+                if (selectedWord != null) {
+                    Spacer(modifier = Modifier.height(s.sm))
+                    com.example.lamha.ui.components.LamhaCard(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                        contentColor = MaterialTheme.colorScheme.onSurface,
+                        elevation = 2.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column {
+                            Text(
+                                text = normalizeToken(selectedWord!!),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            val v = selectedVocab
+                            if (v != null) {
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(v.meaning, style = MaterialTheme.typography.bodyMedium)
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(v.detail, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            } else {
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text("本课 Vocabulary 里还没有收录这个词。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "点空白处/再次点句子可关闭",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.outline
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -706,7 +865,7 @@ fun PreviewGali() {
     val dummyLesson = LessonRepository.getLessons().first()
     LamhaTheme {
         Surface {
-           StreetView(dummyLesson.street, null) {}
+           StreetView(dummyLesson.street, null) { _, _ -> }
         }
     }
 }
