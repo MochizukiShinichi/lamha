@@ -237,6 +237,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
     var ttsReady by remember { mutableStateOf(false) }
+    var ttsHindiReady by remember { mutableStateOf(false) }
     var tts by remember { mutableStateOf<TextToSpeech?>(null) }
 
     // Initialize TTS in a lifecycle-aware way (callback may fire off-main-thread on some devices).
@@ -266,21 +267,32 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
             }
             tts = null
             ttsReady = false
+            ttsHindiReady = false
         }
     }
 
     LaunchedEffect(ttsReady) {
         if (ttsReady) {
-            // Best-effort: set Hindi (India). If missing, Android will fall back.
+            // Strict: only enable speech if Hindi is actually supported.
+            val hi = Locale("hi", "IN")
             try {
-                tts?.language = Locale("hi", "IN")
+                val avail = tts?.isLanguageAvailable(hi) ?: TextToSpeech.LANG_NOT_SUPPORTED
+                if (avail >= TextToSpeech.LANG_AVAILABLE) {
+                    tts?.language = hi
+                    ttsHindiReady = true
+                } else {
+                    ttsHindiReady = false
+                }
             } catch (_: Throwable) {
+                ttsHindiReady = false
             }
+        } else {
+            ttsHindiReady = false
         }
     }
 
-    fun speakTts(text: String) {
-        if (!ttsReady) return
+    fun speakHindiTts(text: String) {
+        if (!ttsHindiReady) return
         val cleaned = text.trim()
         if (cleaned.isEmpty()) return
         try {
@@ -308,8 +320,8 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
             }
             activeAudioId = id
         } else if (fallbackTtsText != null) {
-            // Fallback so new/edited content always has audio.
-            speakTts(fallbackTtsText)
+            // NOTE: For Street dialogue we now prefer strict Hindi TTS; do not fall back to mismatched audio.
+            speakHindiTts(fallbackTtsText)
         }
     }
 
@@ -418,13 +430,25 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                         .padding(padding)
                 ) { tab ->
                     if (tab == 0) {
-                        StreetView(lesson.street, activeAudioId, ttsReady) { id, ttsText ->
-                            if (id == "__tts__") {
-                                if (ttsText != null) speakTts(ttsText)
-                            } else {
-                                playAudio(id, ttsText)
+                        StreetView(
+                            lesson.street,
+                            activeAudioId,
+                            ttsHindiReady,
+                            onPlay = { id, ttsText ->
+                                if (id == "__tts__") {
+                                    if (ttsText != null) speakHindiTts(ttsText)
+                                } else {
+                                    playAudio(id, ttsText)
+                                }
+                            },
+                            onInstallHindiTts = {
+                                try {
+                                    val intent = android.content.Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA)
+                                    context.startActivity(intent)
+                                } catch (_: Throwable) {
+                                }
                             }
-                        }
+                        )
                     } else {
                         MaterialTheme(colorScheme = CourtPalette) {
                             CourtView(lesson.court, activeAudioId, ::playAudio)
@@ -475,8 +499,9 @@ fun TabButton(text: String, subText: String, icon: androidx.compose.ui.graphics.
 fun StreetView(
     section: StreetSection,
     activeId: String?,
-    ttsReady: Boolean,
-    onPlay: (id: String, ttsFallback: String?) -> Unit
+    ttsHindiReady: Boolean,
+    onPlay: (id: String, ttsFallback: String?) -> Unit,
+    onInstallHindiTts: () -> Unit,
 ) {
     val s = com.example.lamha.ui.designsystem.LocalSpacing.current
     LazyColumn(
@@ -497,14 +522,14 @@ fun StreetView(
             StreetBubble(
                 line = line,
                 vocab = section.vocabulary,
-                ttsReady = ttsReady,
+                ttsReady = ttsHindiReady,
                 isPlaying = activeId == line.id,
                 onPlayLine = {
-                    // IMPORTANT: prefer TTS so text edits always match audio.
-                    // Fallback to raw audio if TTS isn't ready yet (avoid silent taps).
-                    if (ttsReady) onPlay("__tts__", line.hindi) else onPlay(line.id, null)
+                    // IMPORTANT: do NOT fall back to raw here; mismatched audio is worse than silence.
+                    if (ttsHindiReady) onPlay("__tts__", line.hindi) else onInstallHindiTts()
                 },
                 onSpeakWord = { word -> onPlay("__tts__", word) },
+                onInstallHindiTts = onInstallHindiTts,
             )
         }
 
@@ -534,6 +559,7 @@ fun StreetBubble(
     isPlaying: Boolean,
     onPlayLine: () -> Unit,
     onSpeakWord: (String) -> Unit,
+    onInstallHindiTts: () -> Unit,
 ) {
     val s = com.example.lamha.ui.designsystem.LocalSpacing.current
     val r = com.example.lamha.ui.designsystem.LocalRadius.current
@@ -631,9 +657,7 @@ fun StreetBubble(
                             selectedVocab = match
                             val w = normalizeToken(clicked)
                             if (w.isNotEmpty()) {
-                                if (ttsReady) {
-                                    onSpeakWord(w)
-                                }
+                                if (ttsReady) onSpeakWord(w) else onInstallHindiTts()
                             }
                         }
                     }
@@ -664,10 +688,14 @@ fun StreetBubble(
                             if (!ttsReady) {
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = "TTS 初始化中…稍等两秒再点词",
+                                    text = "Hindi 语音未安装/不可用。点这里安装后再试。",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.error
                                 )
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Button(onClick = onInstallHindiTts) {
+                                    Text("Install Hindi TTS")
+                                }
                             }
 
                             if (v != null) {
@@ -911,7 +939,7 @@ fun PreviewGali() {
     val dummyLesson = LessonRepository.getLessons().first()
     LamhaTheme {
         Surface {
-           StreetView(dummyLesson.street, null, ttsReady = true) { _, _ -> }
+           StreetView(dummyLesson.street, null, ttsHindiReady = true, onPlay = { _, _ -> }, onInstallHindiTts = {})
         }
     }
 }
