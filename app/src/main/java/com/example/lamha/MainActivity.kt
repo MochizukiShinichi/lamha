@@ -406,7 +406,13 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                         .padding(padding)
                 ) { tab ->
                     if (tab == 0) {
-                        StreetView(lesson.street, activeAudioId) { id, ttsText -> playAudio(id, ttsText) }
+                        StreetView(lesson.street, activeAudioId, ttsReady) { id, ttsText ->
+                            if (id == "__tts__") {
+                                if (ttsText != null) speakTts(ttsText)
+                            } else {
+                                playAudio(id, ttsText)
+                            }
+                        }
                     } else {
                         MaterialTheme(colorScheme = CourtPalette) {
                             CourtView(lesson.court, activeAudioId, ::playAudio)
@@ -454,7 +460,12 @@ fun TabButton(text: String, subText: String, icon: androidx.compose.ui.graphics.
 // ---------------- STREET UI (Clean, Modern, Functional) ----------------
 
 @Composable
-fun StreetView(section: StreetSection, activeId: String?, onPlay: (id: String, ttsFallback: String?) -> Unit) {
+fun StreetView(
+    section: StreetSection,
+    activeId: String?,
+    ttsReady: Boolean,
+    onPlay: (id: String, ttsFallback: String?) -> Unit
+) {
     val s = com.example.lamha.ui.designsystem.LocalSpacing.current
     LazyColumn(
         contentPadding = PaddingValues(bottom = 100.dp, top = s.lg, start = s.lg, end = s.lg),
@@ -471,9 +482,16 @@ fun StreetView(section: StreetSection, activeId: String?, onPlay: (id: String, t
         }
 
         items(section.dialogue) { line ->
-            StreetBubble(line, section.vocabulary, activeId == line.id,
-                onPlayLine = { onPlay(line.id, line.hindi) },
-                onSpeakWord = { word -> onPlay("__tts__", word) }
+            StreetBubble(
+                line = line,
+                vocab = section.vocabulary,
+                ttsReady = ttsReady,
+                isPlaying = activeId == line.id,
+                onPlayLine = {
+                    // IMPORTANT: for Street dialogue, prefer TTS so text edits always match audio.
+                    onPlay("__tts__", line.hindi)
+                },
+                onSpeakWord = { word -> onPlay("__tts__", word) },
             )
         }
 
@@ -499,6 +517,7 @@ fun StreetView(section: StreetSection, activeId: String?, onPlay: (id: String, t
 fun StreetBubble(
     line: DialogueLine,
     vocab: List<VocabItem>,
+    ttsReady: Boolean,
     isPlaying: Boolean,
     onPlayLine: () -> Unit,
     onSpeakWord: (String) -> Unit,
@@ -597,7 +616,12 @@ fun StreetBubble(
                             val match = findVocabForToken(clicked)
                             selectedWord = clicked
                             selectedVocab = match
-                            onSpeakWord(normalizeToken(clicked))
+                            val w = normalizeToken(clicked)
+                            if (w.isNotEmpty()) {
+                                if (ttsReady) {
+                                    onSpeakWord(w)
+                                }
+                            }
                         }
                     }
                 )
@@ -624,6 +648,15 @@ fun StreetBubble(
                                 color = MaterialTheme.colorScheme.primary
                             )
                             val v = selectedVocab
+                            if (!ttsReady) {
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = "TTS 初始化中…稍等两秒再点词",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+
                             if (v != null) {
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(v.meaning, style = MaterialTheme.typography.bodyMedium)
@@ -865,7 +898,7 @@ fun PreviewGali() {
     val dummyLesson = LessonRepository.getLessons().first()
     LamhaTheme {
         Surface {
-           StreetView(dummyLesson.street, null) { _, _ -> }
+           StreetView(dummyLesson.street, null, ttsReady = true) { _, _ -> }
         }
     }
 }
