@@ -72,7 +72,7 @@ class ComposeScreenshotTest {
             LamhaTheme {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize().testTag("root")) {
-                        StreetView(lesson.street, activeId = null, onPlay = {})
+                        StreetView(lesson.street, activeId = null, ttsHindiReady = false, onPlay = { _, _ -> }, onInstallHindiTts = {})
                     }
                 }
             }

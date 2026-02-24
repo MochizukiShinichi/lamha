@@ -64,6 +64,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation("androidx.compose.material:material-icons-extended:1.5.0")
+
+    // Offline word translation (Hindi -> English) for tap-a-word fallback
+    implementation("com.google.mlkit:translate:17.0.2")
+
     testImplementation(libs.junit)
 
     // ARM64-friendly JVM UI verification gate

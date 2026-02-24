@@ -78,7 +78,7 @@ class RoborazziPreviewTest {
             LamhaTheme {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        StreetView(lesson.street, activeId = null, onPlay = {})
+                        StreetView(lesson.street, activeId = null, ttsHindiReady = false, onPlay = { _, _ -> }, onInstallHindiTts = {})
                     }
                 }
             }
