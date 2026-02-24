@@ -3,6 +3,11 @@ package com.example.lamha
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.Translator
+import com.google.mlkit.nl.translate.TranslatorOptions
 import java.util.Locale
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -61,13 +66,15 @@ class MainActivity : ComponentActivity() {
 }
 
 val EczarFont = FontFamily(
-    Font(R.font.eczar_variable, FontWeight.Normal),
-    Font(R.font.eczar_variable, FontWeight.Bold)
+    Font(R.font.noto_sans_light, FontWeight.Light),
+    Font(R.font.noto_sans_regular, FontWeight.Normal),
+    Font(R.font.noto_sans_medium, FontWeight.Medium)
 )
 
 val LatoFont = FontFamily(
-    Font(R.font.lato_regular, FontWeight.Normal),
-    Font(R.font.lato_bold, FontWeight.Bold)
+    Font(R.font.noto_sans_light, FontWeight.Light),
+    Font(R.font.noto_sans_regular, FontWeight.Normal),
+    Font(R.font.noto_sans_medium, FontWeight.Medium)
 )
 
 // --- DESIGN TOKENS ---
@@ -84,24 +91,24 @@ val GaliPlayBtnBg = Color(0xFFEFEAE0)
 
 // Theme Palette Definitions
 val CourtPalette = darkColorScheme(
-    primary = Color(0xFFFFD700),    // Gold
-    secondary = Color(0xFFD4AF37),  // Metallic Gold
-    tertiary = Color(0xFF8D6E63),   // Bronze
+    primary = Color(0xFFE8E0C8),    // Gold title
+    secondary = Color(0xFFD4774E),  // Terracotta
+    tertiary = Color(0xFFB0A280),   // Muted
     background = Color.Transparent, // Let the image show
-    surface = Color(0xCC000000),    // Black frosted glass
-    surfaceVariant = Color(0xB3000000),
-    onSurface = Color(0xFFFFFFFF),  // White text
-    onSurfaceVariant = Color(0xFFEDEDED),
-    onPrimary = Color.Black
+    surface = Color(0xCC1A1613),    // Dark glass
+    surfaceVariant = Color(0xB3212121),
+    onSurface = Color(0xFFD4C5A0),  // Warm text
+    onSurfaceVariant = Color(0xFFB0A280),
+    onPrimary = Color(0xFF1A1613)
 )
 
-private val Terracotta = Color(0xFFC65A3D)
+private val Terracotta = Color(0xFFD4774E)
 
 @Composable
 fun LamhaApp() {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
 
-    LamhaTheme {
+    LamhaTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
             Crossfade(targetState = currentScreen, animationSpec = tween(500)) { screen ->
                 when (screen) {
@@ -130,14 +137,15 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
     val s = com.example.lamha.ui.designsystem.LocalSpacing.current
 
     com.example.lamha.ui.components.LamhaScaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             com.example.lamha.ui.components.LamhaTopBar(
                 title = {
                     Text(
                         text = "लम्हा",
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displayLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Normal,
                     )
                 },
                 containerColor = Color.Transparent,
@@ -162,8 +170,7 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(modifier = Modifier.height(s.xs))
-                    Divider(color = Terracotta.copy(alpha = 0.6f), thickness = 1.dp, modifier = Modifier.width(120.dp))
+                    Spacer(modifier = Modifier.height(s.sm))
                 }
             }
 
@@ -174,50 +181,45 @@ fun HomeScreen(onLessonClick: (Lesson) -> Unit) {
                         .clickable { onLessonClick(lesson) },
                     containerColor = MaterialTheme.colorScheme.surface,
                     contentColor = MaterialTheme.colorScheme.onSurface,
-                    elevation = 3.dp,
+                    elevation = 2.dp,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
                     Column {
+                        Text(
+                            text = lesson.dayTitle,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                        Spacer(modifier = Modifier.height(s.sm))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
                                 modifier = Modifier
-                                    .size(52.dp)
+                                    .size(40.dp)
                                     .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                                    .background(MaterialTheme.colorScheme.secondaryContainer),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = lesson.dayTitle.takeLast(1),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Terracotta
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Medium,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
                             }
                             Spacer(modifier = Modifier.width(s.lg))
                             Column {
                                 Text(
-                                    text = lesson.dayTitle,
-                                    style = MaterialTheme.typography.headlineSmall,
-                                    color = Terracotta
-                                )
-                                Text(
                                     text = lesson.street.title,
                                     style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.onSurface,
                                 )
+                                Spacer(modifier = Modifier.height(s.xs))
+                                Text(
+                                    text = lesson.court.title,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
                             }
-                        }
-                        Spacer(modifier = Modifier.height(s.sm))
-                        com.example.lamha.ui.components.LamhaDivider()
-                        Spacer(modifier = Modifier.height(s.sm))
-                        Column {
-                            Text(
-                                text = lesson.court.title,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                            Spacer(modifier = Modifier.height(s.xs))
-                            // Removed redundant Gali/Leela label for cleaner cards
-
                         }
                     }
                 }
@@ -325,7 +327,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
         }
     }
 
-    LamhaTheme(darkTheme = false) {
+    LamhaTheme(darkTheme = true) {
         Box(modifier = Modifier.fillMaxSize()) {
             if (selectedTab == 1) {
                 // Leela (Court) - Dark parchment + mandala
@@ -503,6 +505,36 @@ fun StreetView(
     onPlay: (id: String, ttsFallback: String?) -> Unit,
     onInstallHindiTts: () -> Unit,
 ) {
+    val context = LocalContext.current
+    // Offline translator (Hindi -> English) for words not in lesson vocab.
+    val translator: Translator = remember {
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.HINDI)
+            .setTargetLanguage(TranslateLanguage.ENGLISH)
+            .build()
+        Translation.getClient(options)
+    }
+    var translatorReady by remember { mutableStateOf(false) }
+    val translationCache = remember { mutableStateMapOf<String, String>() }
+
+    LaunchedEffect(Unit) {
+        // Best effort: download model once; works offline after.
+        try {
+            val conditions = DownloadConditions.Builder().build()
+            translator.downloadModelIfNeeded(conditions)
+                .addOnSuccessListener { translatorReady = true }
+                .addOnFailureListener { translatorReady = false }
+        } catch (_: Throwable) {
+            translatorReady = false
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            try { translator.close() } catch (_: Throwable) {}
+        }
+    }
+
     val s = com.example.lamha.ui.designsystem.LocalSpacing.current
     LazyColumn(
         contentPadding = PaddingValues(bottom = 100.dp, top = s.lg, start = s.lg, end = s.lg),
@@ -523,6 +555,25 @@ fun StreetView(
                 line = line,
                 vocab = section.vocabulary,
                 ttsReady = ttsHindiReady,
+                translatorReady = translatorReady,
+                translateWord = { word, cb ->
+                    val key = word.lowercase()
+                    val cached = translationCache[key]
+                    if (cached != null) {
+                        cb(cached)
+                    } else {
+                        try {
+                            translator.translate(word)
+                                .addOnSuccessListener { tr ->
+                                    translationCache[key] = tr
+                                    cb(tr)
+                                }
+                                .addOnFailureListener { cb(null) }
+                        } catch (_: Throwable) {
+                            cb(null)
+                        }
+                    }
+                },
                 isPlaying = activeId == line.id,
                 onPlayLine = {
                     // IMPORTANT: do NOT fall back to raw here; mismatched audio is worse than silence.
@@ -537,7 +588,7 @@ fun StreetView(
 
         items(section.vocabulary) { vocab ->
             VocabItemRow(vocab, activeId == vocab.id) {
-                // Prefer raw vocab audio; fallback to speaking the Hindi token (best-effort extraction)
+                // Prefer raw vocab audio; if missing, speak the Hindi token (best-effort extraction)
                 val hindiToken = vocab.word.substringBefore("(").trim().ifEmpty { vocab.word }
                 onPlay(vocab.id, hindiToken)
             }
@@ -556,6 +607,8 @@ fun StreetBubble(
     line: DialogueLine,
     vocab: List<VocabItem>,
     ttsReady: Boolean,
+    translatorReady: Boolean,
+    translateWord: (String, (String?) -> Unit) -> Unit,
     isPlaying: Boolean,
     onPlayLine: () -> Unit,
     onSpeakWord: (String) -> Unit,
@@ -585,6 +638,9 @@ fun StreetBubble(
             modifier = Modifier.padding(horizontal = s.sm, vertical = s.xs)
         )
         var selectedVocab by remember { mutableStateOf<VocabItem?>(null) }
+        var selectedTranslation by remember { mutableStateOf<String?>(null) }
+        var isTranslating by remember { mutableStateOf(false) }
+
         var selectedWord by remember { mutableStateOf<String?>(null) }
 
         fun normalizeToken(t: String): String {
@@ -655,9 +711,19 @@ fun StreetBubble(
                             val match = findVocabForToken(clicked)
                             selectedWord = clicked
                             selectedVocab = match
+                            selectedTranslation = null
+
                             val w = normalizeToken(clicked)
                             if (w.isNotEmpty()) {
                                 if (ttsReady) onSpeakWord(w) else onInstallHindiTts()
+                            }
+
+                            if (match == null && w.isNotEmpty()) {
+                                isTranslating = true
+                                translateWord(w) { tr ->
+                                    selectedTranslation = tr
+                                    isTranslating = false
+                                }
                             }
                         }
                     }
@@ -706,6 +772,16 @@ fun StreetBubble(
                             } else {
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text("本课 Vocabulary 里还没有收录这个词。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Spacer(modifier = Modifier.height(6.dp))
+                                if (!translatorReady) {
+                                    Text("离线翻译模型未就绪（首次使用需要下载）。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                } else if (isTranslating) {
+                                    Text("Translating…", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                } else if (selectedTranslation != null) {
+                                    Text("Offline translation: ${'$'}{selectedTranslation}", style = MaterialTheme.typography.bodyMedium)
+                                } else {
+                                    Text("（无离线翻译结果）", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
                             }
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(

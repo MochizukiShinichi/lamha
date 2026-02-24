@@ -7,39 +7,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.lamha.R
 
-// Typography for style C:
-// - Display/Headline/Title: Eczar (serif)
-// - Body/Label: Lato (sans)
+// Figma theme typography: Noto Sans
 
-private val DisplayFontFamily = FontFamily(
-    Font(R.font.eczar_variable, FontWeight.Normal),
-    Font(R.font.eczar_variable, FontWeight.Bold),
-)
-
-private val BodyFontFamily = FontFamily(
-    Font(R.font.lato_regular, FontWeight.Normal),
-    Font(R.font.lato_bold, FontWeight.Bold),
+private val NotoSans = FontFamily(
+    Font(R.font.noto_sans_light, FontWeight.Light),
+    Font(R.font.noto_sans_regular, FontWeight.Normal),
+    Font(R.font.noto_sans_medium, FontWeight.Medium),
 )
 
 private val baseline = Typography()
 
 val LamhaTypography = Typography(
-    // Headings (Eczar) — keep close to baseline; too large hurts Leela aesthetics.
-    displayLarge = baseline.displayLarge.copy(fontFamily = DisplayFontFamily),
-    displayMedium = baseline.displayMedium.copy(fontFamily = DisplayFontFamily),
-    displaySmall = baseline.displaySmall.copy(fontFamily = DisplayFontFamily),
-    headlineLarge = baseline.headlineLarge.copy(fontFamily = DisplayFontFamily),
-    headlineMedium = baseline.headlineMedium.copy(fontFamily = DisplayFontFamily),
-    headlineSmall = baseline.headlineSmall.copy(fontFamily = DisplayFontFamily),
-    titleLarge = baseline.titleLarge.copy(fontFamily = DisplayFontFamily, fontSize = 22.sp),
-    titleMedium = baseline.titleMedium.copy(fontFamily = DisplayFontFamily, fontSize = 18.sp),
-    titleSmall = baseline.titleSmall.copy(fontFamily = DisplayFontFamily, fontSize = 16.sp),
+    displayLarge = baseline.displayLarge.copy(fontFamily = NotoSans, fontSize = 48.sp, fontWeight = FontWeight.Normal, lineHeight = 56.sp),
+    displayMedium = baseline.displayMedium.copy(fontFamily = NotoSans),
+    displaySmall = baseline.displaySmall.copy(fontFamily = NotoSans),
 
-    // Body (Lato) — bump sizes for readability across the app.
-    bodyLarge = baseline.bodyLarge.copy(fontFamily = BodyFontFamily, fontSize = 18.sp),
-    bodyMedium = baseline.bodyMedium.copy(fontFamily = BodyFontFamily, fontSize = 16.sp),
-    bodySmall = baseline.bodySmall.copy(fontFamily = BodyFontFamily, fontSize = 14.sp),
-    labelLarge = baseline.labelLarge.copy(fontFamily = BodyFontFamily, fontSize = 15.sp),
-    labelMedium = baseline.labelMedium.copy(fontFamily = BodyFontFamily, fontSize = 13.sp),
-    labelSmall = baseline.labelSmall.copy(fontFamily = BodyFontFamily, fontSize = 12.sp),
+    headlineLarge = baseline.headlineLarge.copy(fontFamily = NotoSans, fontSize = 28.sp, fontWeight = FontWeight.Medium),
+    headlineMedium = baseline.headlineMedium.copy(fontFamily = NotoSans, fontSize = 24.sp, fontWeight = FontWeight.Medium),
+    headlineSmall = baseline.headlineSmall.copy(fontFamily = NotoSans, fontSize = 20.sp, fontWeight = FontWeight.Medium),
+
+    titleLarge = baseline.titleLarge.copy(fontFamily = NotoSans, fontSize = 24.sp, fontWeight = FontWeight.Medium),
+    titleMedium = baseline.titleMedium.copy(fontFamily = NotoSans, fontSize = 18.sp, fontWeight = FontWeight.Normal),
+    titleSmall = baseline.titleSmall.copy(fontFamily = NotoSans, fontSize = 16.sp, fontWeight = FontWeight.Normal),
+
+    bodyLarge = baseline.bodyLarge.copy(fontFamily = NotoSans, fontSize = 18.sp, fontWeight = FontWeight.Normal, lineHeight = 28.sp),
+    bodyMedium = baseline.bodyMedium.copy(fontFamily = NotoSans, fontSize = 16.sp, fontWeight = FontWeight.Normal, lineHeight = 24.sp),
+    bodySmall = baseline.bodySmall.copy(fontFamily = NotoSans, fontSize = 14.sp, fontWeight = FontWeight.Light, lineHeight = 20.sp),
+
+    labelLarge = baseline.labelLarge.copy(fontFamily = NotoSans, fontSize = 16.sp, fontWeight = FontWeight.Medium),
+    labelMedium = baseline.labelMedium.copy(fontFamily = NotoSans, fontSize = 14.sp, fontWeight = FontWeight.Light),
+    labelSmall = baseline.labelSmall.copy(fontFamily = NotoSans, fontSize = 12.sp, fontWeight = FontWeight.Light),
 )
