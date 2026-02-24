@@ -1,19 +1,13 @@
 package com.example.lamha.ui.theme
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.lamha.R
 
-// Figma theme typography: Noto Sans
+// Figma theme typography: Noto Sans (use system SansSerif to avoid resource crash)
 
-private val NotoSans = FontFamily(
-    Font(R.font.noto_sans_light, FontWeight.Light),
-    Font(R.font.noto_sans_regular, FontWeight.Normal),
-    Font(R.font.noto_sans_medium, FontWeight.Medium),
-)
+private val NotoSans = FontFamily.SansSerif
 
 private val baseline = Typography()
 

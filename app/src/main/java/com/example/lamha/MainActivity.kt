@@ -65,17 +65,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-val EczarFont = FontFamily(
-    Font(R.font.noto_sans_light, FontWeight.Light),
-    Font(R.font.noto_sans_regular, FontWeight.Normal),
-    Font(R.font.noto_sans_medium, FontWeight.Medium)
-)
+val EczarFont = FontFamily.SansSerif
 
-val LatoFont = FontFamily(
-    Font(R.font.noto_sans_light, FontWeight.Light),
-    Font(R.font.noto_sans_regular, FontWeight.Normal),
-    Font(R.font.noto_sans_medium, FontWeight.Medium)
-)
+val LatoFont = FontFamily.SansSerif
 
 // --- DESIGN TOKENS ---
 val GaliShape = RoundedCornerShape(14.dp) // Refined for Gali
