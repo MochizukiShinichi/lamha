@@ -10,7 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import com.example.lamha.ui.theme.LamhaTheme
+import com.example.lamha.ui.theme.GaliLightScheme
+import com.example.lamha.ui.theme.LeelaDarkScheme
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -25,7 +26,7 @@ import java.io.FileOutputStream
 @ConscryptMode(ConscryptMode.Mode.OFF)
 @Config(sdk = [34])
 @GraphicsMode(GraphicsMode.Mode.LEGACY)
-@org.junit.Ignore("Device-driven screenshots now; JVM capture unstable on ARM64")
+@org.junit.Ignore("JVM rendering unstable on ARM64 - use device screenshots")
 class RoborazziPreviewTest {
 
     private fun outputDir(): File = File("build/outputs/jvm-previews").apply { mkdirs() }
@@ -60,7 +61,7 @@ class RoborazziPreviewTest {
         val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
         val lesson = LessonRepository.getLessons().first()
         renderToPng(activity, "leela.png") {
-            LamhaTheme {
+            MaterialTheme(colorScheme = LeelaDarkScheme) {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize()) {
                         CourtView(lesson.court, activeId = null, onPlay = {})
@@ -75,7 +76,7 @@ class RoborazziPreviewTest {
         val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
         val lesson = LessonRepository.getLessons().first()
         renderToPng(activity, "gali.png") {
-            LamhaTheme {
+            MaterialTheme(colorScheme = GaliLightScheme) {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize()) {
                         StreetView(lesson.street, activeId = null, ttsHindiReady = false, onPlay = { _, _ -> }, onInstallHindiTts = {})

@@ -41,6 +41,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.example.lamha.ui.theme.LamhaTheme
+import com.example.lamha.ui.theme.GaliLightScheme
+import com.example.lamha.ui.theme.LeelaDarkScheme
+import com.example.lamha.ui.theme.GaliLightScheme
+import com.example.lamha.ui.theme.LeelaDarkScheme
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -100,7 +104,7 @@ private val Terracotta = Color(0xFFD4774E)
 fun LamhaApp() {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
 
-    LamhaTheme(darkTheme = true) {
+    LamhaTheme(darkTheme = false) {
         Surface(modifier = Modifier.fillMaxSize()) {
             Crossfade(targetState = currentScreen, animationSpec = tween(500)) { screen ->
                 when (screen) {
@@ -319,7 +323,7 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
         }
     }
 
-    LamhaTheme(darkTheme = true) {
+    LamhaTheme(darkTheme = false) {
         Box(modifier = Modifier.fillMaxSize()) {
             if (selectedTab == 1) {
                 // Leela (Court) - Dark parchment + mandala
@@ -424,27 +428,29 @@ fun LessonDetailScreen(lesson: Lesson, onBack: () -> Unit) {
                         .padding(padding)
                 ) { tab ->
                     if (tab == 0) {
-                        StreetView(
-                            lesson.street,
-                            activeAudioId,
-                            ttsHindiReady,
-                            onPlay = { id, ttsText ->
-                                if (id == "__tts__") {
-                                    if (ttsText != null) speakHindiTts(ttsText)
-                                } else {
-                                    playAudio(id, ttsText)
+                        MaterialTheme(colorScheme = GaliLightScheme) {
+                            StreetView(
+                                lesson.street,
+                                activeAudioId,
+                                ttsHindiReady,
+                                onPlay = { id, ttsText ->
+                                    if (id == "__tts__") {
+                                        if (ttsText != null) speakHindiTts(ttsText)
+                                    } else {
+                                        playAudio(id, ttsText)
+                                    }
+                                },
+                                onInstallHindiTts = {
+                                    try {
+                                        val intent = android.content.Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA)
+                                        context.startActivity(intent)
+                                    } catch (_: Throwable) {
+                                    }
                                 }
-                            },
-                            onInstallHindiTts = {
-                                try {
-                                    val intent = android.content.Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA)
-                                    context.startActivity(intent)
-                                } catch (_: Throwable) {
-                                }
-                            }
-                        )
+                            )
+                        }
                     } else {
-                        MaterialTheme(colorScheme = CourtPalette) {
+                        MaterialTheme(colorScheme = LeelaDarkScheme) {
                             CourtView(lesson.court, activeAudioId, ::playAudio)
                         }
                     }

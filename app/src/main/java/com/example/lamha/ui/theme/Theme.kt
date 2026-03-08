@@ -6,7 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-private val LightScheme = lightColorScheme(
+val GaliLightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
     primaryContainer = primaryContainerLight,
@@ -37,7 +37,7 @@ private val LightScheme = lightColorScheme(
     inversePrimary = inversePrimaryLight,
 )
 
-private val DarkScheme = darkColorScheme(
+val LeelaDarkScheme = darkColorScheme(
     primary = primaryDark,
     onPrimary = onPrimaryDark,
     primaryContainer = primaryContainerDark,
@@ -74,7 +74,7 @@ fun LamhaTheme(
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkScheme else LightScheme,
+        colorScheme = if (darkTheme) LeelaDarkScheme else GaliLightScheme,
         typography = LamhaTypography,
         content = content,
     )
